@@ -7,10 +7,10 @@ In recent years, a number of computational approaches provided different strateg
 ## About the tool
 
 Features used in the study are a collection of mechanisms describing tumor, immune and their interaction. Immune Escape mechanisms are an important addition to an already described set of mechanisms covered by other TME classification tools, like  [Molecular Functional Portraits](https://pubmed.ncbi.nlm.nih.gov/34019806/) or [Archetypes](https://pubmed.ncbi.nlm.nih.gov/34963056/).
-![[pics/Immune_Escape_mechanisms.jpg]]
+![Immune_Escape_mechanisms](pics/Immune_Escape_mechanisms.jpg) 
 <p align="center">Immune Escape Mechanisms covered in the study</p>
 We defined 9 TME types based on full feature set of 45 mechanisms for major immune escape strategies, which can be used to guide decision-making for the patient.
-![[IE_clustering.png](https://github.com/BostonGene/Immune_Escape/blob/main/pics/IE_clustering.png)]
+![IE_clustering](pics/IE_clustering.jpg)  
 <p align="center">Identified TME types</p>
 The identified Immune Escape TME types are as follows:
 
