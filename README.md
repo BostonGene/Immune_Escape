@@ -10,7 +10,7 @@ Features used in the study are a collection of mechanisms describing tumor, immu
 ![[pics/Immune_Escape_mechanisms.jpg]]
 <p align="center">Immune Escape Mechanisms covered in the study</p>
 We defined 9 TME types based on full feature set of 45 mechanisms for major immune escape strategies, which can be used to guide decision-making for the patient.
-![[IE_clustering.png]]
+![[IE_clustering.png](https://github.com/BostonGene/Immune_Escape/blob/main/pics/IE_clustering.png)]
 <p align="center">Identified TME types</p>
 The identified Immune Escape TME types are as follows:
 
