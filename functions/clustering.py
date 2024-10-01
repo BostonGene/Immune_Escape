@@ -8,7 +8,6 @@ from tqdm import tqdm
 from pathlib import Path
 from functions.utils import GeneSet, mean_confidence_interval
 from functions.plotting import axis_matras, bot_bar_plot, lin_colors
-from jqmcvi import base
 
 import matplotlib
 
@@ -389,29 +388,6 @@ def SWISS(data, groups, group_mean=True):
 
     return RatioA
 
-def calculate_dunn_index_fast(df, labels):
-    """
-    Вычисляет индекс Данна для заданных кластеров с использованием оптимизированного подхода.
-
-    Параметры:
-    df : pandas.DataFrame
-        DataFrame, содержащий данные.
-    labels : pandas.Series
-        Series, содержащая метки кластеров.
-
-    Возвращает:
-    float
-        Индекс Данна для заданных кластеров.
-    """
-    # Преобразование DataFrame в NumPy массив
-    points = df.to_numpy()
-    
-    # Преобразование меток кластеров в NumPy массив
-    cluster_labels = labels.to_numpy()
-
-    # Вызов функции dunn_fast
-    dunn_index = base.dunn_fast(points, cluster_labels)
-    return dunn_index
 
 def clustering_profile_metrics_mean_plot(cluster_metrics, cluster_of_interest=None, select_better=False):
     """
@@ -425,7 +401,6 @@ def clustering_profile_metrics_mean_plot(cluster_metrics, cluster_of_interest=No
                'ch':'Calinski-Harabasz', 
                'sc':'Silouhette', 
                'sw':'SWISS Score',
-            #    'di':'Dunn Index',
                'spar_w':'Sparsity (Basis matrix)',
                'spar_h':'Sparsity (Feature matrix)',
                'coph_cor':'Cophenetic correlation',
