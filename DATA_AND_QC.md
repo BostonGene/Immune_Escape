@@ -4,6 +4,7 @@ For Illumina RNAseq, the pipeline of getting required data format is as follows,
 1) Perform pseudo-alignment of QC-checked reads with [Kallisto](https://pachterlab.github.io/kallisto/) v0.42.4 to [GENCODE v23 transcripts 69](https://www.gencodegenes.org/human/) .
 
    Build index:
+   
    '''
     wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_23/gencode.v23.chr_patch_hapl_scaff.transcripts.fa.gz
     kallisto index -i gencode_v23.idx gencode.v23.chr_patch_hapl_scaff.transcripts.fa.gz
