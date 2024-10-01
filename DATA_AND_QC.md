@@ -12,7 +12,7 @@ For Illumina RNAseq, the pipeline of getting required data format is as follows,
 
 
    The example command to align, starting in folder with paired-end fastq.gz files (for 1 sample) may be: 
-   ```bash
+```bash
 	kallisto quant -i gencode_v23.idx -o your_output_dir --paired-end RNASeq_tumor_reads_1.fastq.gz RNASeq_tumor_reads_2.fastq.gz
 ```
 Note that for single-end reads the flag is "-single". This step will produce TPMs in the file abundance.tsv in folder your_output_dir.
@@ -39,7 +39,7 @@ In general, low quality sample has a multihit of several QC metrics. The additio
 Python example of transforming abundance.tsv for one sample:
 
 ```python
-import pandas as pd
+	import pandas as pd
 	import numpy as np
 	
 	kallisto_output = pd.read_csv('abundance.tsv', sep='\t')
@@ -112,6 +112,7 @@ For RNAseq, there is a number of low-expressed genes which are forming a peak ne
 | ![distribution_example](pics/distribution_example.png)                                                |
 | ----------------------------------------------------------------------------------------------------- |
 | *Distribution example for RNAseq samples in kdeplot, left — low quality, right — OK quality; logTPMs* |
+
 For microarray data, it is also a good practice to check distributions — low quality samples may have differences from the majority of the datasets.
 
 Once all of the processing steps are done, proceed to sample classification.
