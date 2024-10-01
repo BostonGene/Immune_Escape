@@ -5,24 +5,27 @@ For Illumina RNAseq, the pipeline of getting required data format is as follows,
 
    Build index:
    
-   '''
-    wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_23/gencode.v23.chr_patch_hapl_scaff.transcripts.fa.gz
-    kallisto index -i gencode_v23.idx gencode.v23.chr_patch_hapl_scaff.transcripts.fa.gz
-   '''
+```bash
+	wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_23/gencode.v23.chr_patch_hapl_scaff.transcripts.fa.gz
+	kallisto index -i gencode_v23.idx gencode.v23.chr_patch_hapl_scaff.transcripts.fa.gz
+```
 
 
    The example command to align, starting in folder with paired-end fastq.gz files (for 1 sample) may be: 
-    kallisto quant -i gencode_v23.idx -o your_output_dir --paired-end RNASeq_tumor_reads_1.fastq.gz RNASeq_tumor_reads_2.fastq.gz
-
+   ```bash
+	kallisto quant -i gencode_v23.idx -o your_output_dir --paired-end RNASeq_tumor_reads_1.fastq.gz RNASeq_tumor_reads_2.fastq.gz
+```
 Note that for single-end reads the flag is "-single". This step will produce TPMs in the file abundance.tsv in folder your_output_dir.
 
 2) Perform reads quality control (QC) [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) v0.11.5, [FastQ Screen](https://www.bioinformatics.babraham.ac.uk/projects/fastq_screen/) v0.11.1, [RSeQC](http://rseqc.sourceforge.net/) v3.0.0 (optionally with STAR alignment and resulting bam) using [MultiQC](https://github.com/ewels/MultiQC) v1.6.
 
    The example command, starting in a directory with fastq.gz files may be:
-   
+```bash
 	fastqc .fastq.gz # read quality control
 	fastq_screen *.fastq.gz # read quality control
 	multiqc . # beautiful summary of results
+```
+	
 
 Here, we pay attention to: 
 - A-T and G-C ratio, which needs to be almost equal at positions starting from ~20bps;
@@ -35,7 +38,8 @@ In general, low quality sample has a multihit of several QC metrics. The additio
 3) Transform to logTPM:
 Python example of transforming abundance.tsv for one sample:
 
-	import pandas as pd
+```python
+import pandas as pd
 	import numpy as np
 	
 	kallisto_output = pd.read_csv('abundance.tsv', sep='\t')
@@ -61,10 +65,13 @@ Python example of transforming abundance.tsv for one sample:
 	    return hugo_gene, transcript_type
 	
 	kallisto_output[['HUGO_Gene', 'Transcript_Type']] = kallisto_output['target_id'].apply(lambda x: pd.Series(parse_target_id(x)))
-	kallisto_output['logTPM'] = np.log2(kallisto_output['tpm'] + 1)
-	result_for_qc = kallisto_output[['HUGO_Gene', 'Transcript_Type', 'tpm', 'logTPM']] # resulting df for checking QC with kallisto
-	 result_logTPM_series = result_for_qc[result_for_qc.Transcript_Type=='protein_coding'].groupby('HUGO_Gene').logTPM.sum() 
-	 result_logTPM_series = recalculate_tpm(result_logTPM_series) #resulting series used in analysis for the sample
+	result_for_qc = kallisto_output[['HUGO_Gene', 'Transcript_Type', 'tpm']] # resulting df for checking QC with kallisto
+
+	result_logTPM_series = result_for_qc[result_for_qc.Transcript_Type=='protein_coding'].groupby('HUGO_Gene').tpm.sum() 
+	result_logTPM_series = recalculate_tpm(result_logTPM_series)
+	result_logTPM_series = np.log2(result_logTPM_series + 1) #Resulting series used in analysis for the sample
+```
+	
 
 ### Getting data for microarray or processed RNAseq
 The tutorial on how to download and process microarrays is in the [notebook](https://github.com/BostonGene/MFP/blob/master/GEO_data_retrieval.ipynb) for the [Molecular Functional Portraits](https://pubmed.ncbi.nlm.nih.gov/34019806/) paper. 
