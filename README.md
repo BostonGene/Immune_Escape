@@ -50,7 +50,7 @@ Starting with identified batches of data, QC-checked, with removed outliers, and
 2) With insufficient sample size in a batch — use [Get_reference_cohort_and_classify.ipynb](Get_reference_cohort_and_classify.ipynb) to find reference cohort out of metacohort, or get one manually and use [Classify_samples.ipynb](Classify_samples.ipynb).
 
 **The workflow is as follows:**
-![[pics/Classification_workflow.png]]
+![Classification_workflow](pics/Classification_workflow.png)  
 <p align="center">Diagram for sample classification</p>
 
 [Classify_samples.ipynb](Classify_samples.ipynb) — notebook with example classification for the cohort with batch size > 10.
