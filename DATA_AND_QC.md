@@ -6,14 +6,14 @@ For Illumina RNAseq, the pipeline of getting required data format is as follows,
    Build index:
    
 ```bash
-	wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_23/gencode.v23.chr_patch_hapl_scaff.transcripts.fa.gz
-	kallisto index -i gencode_v23.idx gencode.v23.chr_patch_hapl_scaff.transcripts.fa.gz
+wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_23/gencode.v23.chr_patch_hapl_scaff.transcripts.fa.gz
+kallisto index -i gencode_v23.idx gencode.v23.chr_patch_hapl_scaff.transcripts.fa.gz
 ```
 
 
    The example command to align, starting in folder with paired-end fastq.gz files (for 1 sample) may be: 
 ```bash
-	kallisto quant -i gencode_v23.idx -o your_output_dir --paired-end RNASeq_tumor_reads_1.fastq.gz RNASeq_tumor_reads_2.fastq.gz
+kallisto quant -i gencode_v23.idx -o your_output_dir --paired-end RNASeq_tumor_reads_1.fastq.gz RNASeq_tumor_reads_2.fastq.gz
 ```
 Note that for single-end reads the flag is "-single". This step will produce TPMs in the file abundance.tsv in folder your_output_dir.
 
@@ -21,9 +21,9 @@ Note that for single-end reads the flag is "-single". This step will produce TPM
 
    The example command, starting in a directory with fastq.gz files may be:
 ```bash
-	fastqc .fastq.gz # read quality control
-	fastq_screen *.fastq.gz # read quality control
-	multiqc . # beautiful summary of results
+fastqc .fastq.gz # read quality control
+fastq_screen *.fastq.gz # read quality control
+multiqc . # beautiful summary of results
 ```
 	
 
@@ -33,43 +33,44 @@ Here, we pay attention to:
 - Phred score >30;
 - Contamination data (from rRNA, non-target genome regions, and other organisms);
 - Using Kallisto: target RNA reads should be >10M; % of protein-coding reads should be >80%.
+  
 In general, low quality sample has a multihit of several QC metrics. The additional option is to not perform QC sample-wise, if one is limited in sample size, but read-wise, and discard low-quality read. Additionally, we perform other QC analyses, which are the same as for microarray or processed RNAseq data.
 
 3) Transform to logTPM:
 Python example of transforming abundance.tsv for one sample:
 
 ```python
-	import pandas as pd
-	import numpy as np
-	
-	kallisto_output = pd.read_csv('abundance.tsv', sep='\t')
-	
-	def recalculate_tpm(series):
-	    """   
-	    Recalculates TPM after gene deletion/filtration
-	    :param series: pandas series, genes in indeces
-	    :return: pandas series with recalculated TPM.
-	    """
-	    total_tpm = series.sum()
-	    return series.divide(total_tpm) * 1e6
-	    
-	def parse_target_id(target_id):
-		"""   
-	    Parses target_id column value (str) to extract HUGO_Gene and Transcript_Type values
-	    :param target_id: pandas series, name for trancript from gencode index
-	    :return: set of str with HUGO_Gene and Transcript_Type values 
-	    """
-	    fields = target_id.split('|')
-	    hugo_gene = fields[5]      # HUGO symbol is on the 6th position ?
-	    transcript_type = fields[7]  # transcript_type is on the 8th position ?
-	    return hugo_gene, transcript_type
-	
-	kallisto_output[['HUGO_Gene', 'Transcript_Type']] = kallisto_output['target_id'].apply(lambda x: pd.Series(parse_target_id(x)))
-	result_for_qc = kallisto_output[['HUGO_Gene', 'Transcript_Type', 'tpm']] # resulting df for checking QC with kallisto
+import pandas as pd
+import numpy as np
 
-	result_logTPM_series = result_for_qc[result_for_qc.Transcript_Type=='protein_coding'].groupby('HUGO_Gene').tpm.sum() 
-	result_logTPM_series = recalculate_tpm(result_logTPM_series)
-	result_logTPM_series = np.log2(result_logTPM_series + 1) #Resulting series used in analysis for the sample
+kallisto_output = pd.read_csv('abundance.tsv', sep='\t')
+
+def recalculate_tpm(series):
+    """   
+    Recalculates TPM after gene deletion/filtration
+    :param series: pandas series, genes in indeces
+    :return: pandas series with recalculated TPM.
+    """
+    total_tpm = series.sum()
+    return series.divide(total_tpm) * 1e6
+    
+def parse_target_id(target_id):
+	"""   
+    Parses target_id column value (str) to extract HUGO_Gene and Transcript_Type values
+    :param target_id: pandas series, name for trancript from gencode index
+    :return: set of str with HUGO_Gene and Transcript_Type values 
+    """
+    fields = target_id.split('|')
+    hugo_gene = fields[5]      # HUGO symbol is on the 6th position ?
+    transcript_type = fields[7]  # transcript_type is on the 8th position ?
+    return hugo_gene, transcript_type
+
+kallisto_output[['HUGO_Gene', 'Transcript_Type']] = kallisto_output['target_id'].apply(lambda x: pd.Series(parse_target_id(x)))
+result_for_qc = kallisto_output[['HUGO_Gene', 'Transcript_Type', 'tpm']] # resulting df for checking QC with kallisto
+
+result_logTPM_series = result_for_qc[result_for_qc.Transcript_Type=='protein_coding'].groupby('HUGO_Gene').tpm.sum() 
+result_logTPM_series = recalculate_tpm(result_logTPM_series)
+result_logTPM_series = np.log2(result_logTPM_series + 1) #Resulting series used in analysis for the sample
 ```
 	
 
