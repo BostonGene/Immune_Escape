@@ -52,8 +52,7 @@ Starting with identified batches of data, QC-checked, with removed outliers, and
 **The workflow is as follows:**
 ![[pics/Classification_workflow.png]]
 <p align="center">Diagram for sample classification</p>
-[Classify_samples.ipynb](Classify_samples.ipynb) — 
 
-[Get_reference_cohort_and_classify.ipynb](Get_reference_cohort_and_classify.ipynb) —
+[Classify_samples.ipynb](Classify_samples.ipynb) — notebook with example classification for the cohort with batch size > 10.
 
-We use raw ssGSEA and PROGENy to find nearest batch, which works as well as via expression data; we show it in [Test_mapper.ipynb](Test_mapper.ipynb).
+[Get_reference_cohort_and_classify.ipynb](Get_reference_cohort_and_classify.ipynb) — notebook with additional step for finding the reference. Not that we use raw ssGSEA and PROGENy to find nearest batch, which works as well as via expression data; we show it in [Test_mapper.ipynb](Test_mapper.ipynb).
