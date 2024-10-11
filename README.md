@@ -27,7 +27,7 @@ The identified Immune Escape TME types are as follows:
 | Immune Desert                    | D            | Cluster was marked by the lowest immune cell infiltration and lowest presence of stroma components, with occasional hypoxia.                                                                                                                                                                                 |
 | Faintly Infiltrated, Angiogenic  | D/Ang        | Low immune cell content (mostly lymphocytes) with increased TCR and BCR diversity compared to other desert types, moderate angiogenesis and endothelial cell levels.                                                                                                                                         |
 
-Immune Escape class annotation for TCGA samples is in [data/TCGA_IE_class_prediction.tsv](data/TCGA_IE_class_prediction.tsv) ('IE_Class' column; rest — probabilities).
+Immune Escape class annotation for TCGA samples is in [data/TCGA_IE_class_prediction.tsv](data/TCGA_IE_class_prediction.tsv) ('IE_Class' column; rest — probabilities). Immune Escape features calculated for >37000 samples are in [data/scaled_features.tsv](data/scaled_features.tsv) 
 
 ## Citation
 If software, data, and/or website are used in your publication, please cite [CITATION] and make a reference to this repository.

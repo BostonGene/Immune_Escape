@@ -43,34 +43,18 @@ Python example of transforming abundance.tsv for one sample:
 import pandas as pd
 import numpy as np
 
+#functions from basicqc.py 
+from projects.Immune_Escape.functions.basicqc import target_transcripts, parse_target_id, recalculate_tpm, check_log_scale
+
 kallisto_output = pd.read_csv('abundance.tsv', sep='\t')
 
-def recalculate_tpm(series):
-    """   
-    Recalculates TPM after gene deletion/filtration
-    :param series: pandas series, genes in indeces
-    :return: pandas series with recalculated TPM.
-    """
-    total_tpm = series.sum()
-    return series.divide(total_tpm) * 1e6
-    
-def parse_target_id(target_id):
-	"""   
-    Parses target_id column value (str) to extract HUGO_Gene and Transcript_Type values
-    :param target_id: pandas series, name for trancript from gencode index
-    :return: set of str with HUGO_Gene and Transcript_Type values 
-    """
-    fields = target_id.split('|')
-    hugo_gene = fields[5]      # HUGO symbol is on the 6th position ?
-    transcript_type = fields[7]  # transcript_type is on the 8th position ?
-    return hugo_gene, transcript_type
+kallisto_output[['ENSEMBL_ID','HUGO_Gene', 'Transcript_Type']] = kallisto_output['target_id'].apply(lambda x: pd.Series(parse_target_id(x)))
+result_for_qc = kallisto_output[['ENSEMBL_ID','HUGO_Gene', 'Transcript_Type', 'tpm']] # resulting df for checking QC with kallisto, check QC_example notebook
 
-kallisto_output[['HUGO_Gene', 'Transcript_Type']] = kallisto_output['target_id'].apply(lambda x: pd.Series(parse_target_id(x)))
-result_for_qc = kallisto_output[['HUGO_Gene', 'Transcript_Type', 'tpm']] # resulting df for checking QC with kallisto
-
-result_logTPM_series = result_for_qc[result_for_qc.Transcript_Type=='protein_coding'].groupby('HUGO_Gene').tpm.sum() 
+result_logTPM_series = result_for_qc[(result_for_qc.ENSEMBL_ID.isin(target_transcripts))].groupby('HUGO_Gene').tpm.sum()
 result_logTPM_series = recalculate_tpm(result_logTPM_series)
-result_logTPM_series = np.log2(result_logTPM_series + 1) #Resulting series used in analysis for the sample
+
+result_logTPM_series = check_log_scale(result_logTPM_series) #Resulting series used in analysis for the sample
 ```
 	
 
@@ -82,7 +66,7 @@ For the processed Illumina RNAseq, it's important to convert values to logTPMs. 
 For microarray data, if not in the HUGO format, we propose the same approach -- map to HUGO using GENCODEv23 annotation, afterwards, get mean score and log-normalize.
 
 ### Additional QC
-We additionally check batch effect, outliers, overall data quality via distribution, expression scores correlation for the cohorts. Please see [QC_notebook.ipynb](QC_notebook.ipynb) for the tutorial. 
+We additionally check batch effect, outliers, overall data quality via distribution, expression scores correlation for the cohorts. Please see [QC_notebook.ipynb](test_data/QC_example_notebook.ipynb) for the tutorial. 
 
 #### Batch effect
 
