@@ -69,7 +69,7 @@ For the processed Illumina RNAseq, it's important to convert values to logTPMs. 
 For microarray data, if not in the HUGO format, we propose the same approach -- map to HUGO using GENCODEv23 annotation, afterwards, get mean score and log-normalize.
 
 ### Additional QC
-We additionally check batch effect, outliers, overall data quality via distribution, expression scores correlation for the cohorts. Please see [QC_notebook.ipynb](test_data/QC_example_notebook.ipynb) for the tutorial. 
+We additionally check batch effect, outliers, overall data quality via distribution, expression scores correlation for the cohorts. Please see [test_data/QC_example_notebook.ipynb](test_data/QC_example_notebook.ipynb) for the tutorial. 
 
 #### Batch effect
 
