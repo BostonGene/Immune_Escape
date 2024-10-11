@@ -2,21 +2,31 @@ import numpy as np
 import pandas as pd
 from sklearn.decomposition import PCA
 from scipy.stats import median_abs_deviation as mad
-import os
-from tqdm import tqdm_notebook, tqdm
-import glob
 from pathlib import Path
-import tarfile
-import subprocess
-import sys
-import shutil
-import zipfile
 
-lgrey_color = '#AAAAAA'
+
+rna_types_order = ['protein_coding',
+'protein_coding_unused',
+'retained_intron',
+'nonsense_mediated_decay',
+'processed_transcript',
+'lincRNA',
+'Mt_rRNA',
+'antisense',
+'Ig',
+'TEC',
+'sense_overlapping',
+'non_stop_decay',
+'sense_intronic',
+'miRNA',
+'Mt_tRNA',
+'TCR_genes',
+'other_noncoding']
 
 rna_types_palette = {'3prime_overlapping_ncrna': '#000000',
  'Ig': '#eec39a',
- 'IG_V_gene': '#595652',
+ 'TCR_genes': '#595652',
+'other_noncoding':'#a9b394',
  'Mt_rRNA': '#ac8181',
  'Mt_tRNA': '#99e550',
  'TEC': '#3f3f74',
@@ -43,398 +53,40 @@ rna_types_palette = {'3prime_overlapping_ncrna': '#000000',
  'vaultRNA': '#663931',
 'protein_coding_unused':'#7C9A95'}
 
-cells_p = {'B_cells': '#004283',
- 'Plasma_B_cells': '#0054A8',
- 'Non_plasma_B_cells': '#0066CC',
- 'Mature_B_cells': '#3889DB',
- 'Naive_B_cells': '#78B0E9',
- 'T_cells': '#285A51',
- 'CD8_T_cells': '#31685E',
- 'CD8_T_cells_PD1_high': '#3C776C',
- 'CD8_T_cells_PD1_low': '#3C776C',
- 'CD4_T_cells': '#61A197',
- 'Th': '#70B0A5',
- 'Th1_cells': '#7FBEB3',
- 'Th2_cells': '#8FCCC2',
- 'Th17_cells': '#9DD4C9',
- 'Naive_T_helpers': '#ACDCD3',
- 'Tregs': '#CBEBE6',
- 'NK_cells': '#6181A1',
- 'Cytotoxic_NK_cells': '#7F9EBE',
- 'Regulatory_NK_cells': '#9DB8D4',
- 'Myeloid_cells': '#8C0021',
- 'Monocytes': '#6A3C77',
- 'Macrophages': '#865494',
- 'Macrophages_M1': '#A370B0',
- 'Macrophages_M2': '#BF8FCC',
- 'Microglia': '#6B4F73',
- 'MDSC': '#9F86A6',
- 'Granulocytes': '#D93158',
- 'Eosinophils': '#B7002B',
- 'Neutrophils': '#EC849C',
- 'Basophils': '#854855',
- 'Mast_cells': '#B0707D',
- 'Dendritic_cells': '#50285B',
- 'Endothelium': '#DCB7AC',
- 'Vascular_endothelium_cells': '#DCB7AC',
- 'Lymphatic_endothelium_cells': '#998078',
- 'Stromal_cells': '#CC7A00',
- 'Fibroblasts': '#FF9500',
- 'iCAF': '#FFB341',
- 'myCAF': '#FFCD83',
- 'Follicular_dendritic_cells': '#D2871E',
- 'Adypocytes': '#ECDAA7',
- 'Fibroblastic_reticular_cells': '#995B00',
- 'Other': '#C2C1C7',
- 'Epithelial_cells': '#DFD3CF',
- 'Muscles': '#DF714B',
- 'Bones': '#96A4B3'}
+target_transcripts = pd.read_csv(
+            Path(__file__)
+            .resolve()
+            .parent.joinpath('databases', 'coding_xena_transcripts_wo_mt_and_hist.tsv'),
+        sep='\t')['ENSEMBL_ID'].to_list()
 
-cells_o = ['NK_cells',
- 'CD4_T_cells',
- 'CD8_T_cells',
- 'B_cells',
- 'Monocytes',
- 'Macrophages',
- 'Neutrophils',
- 'Fibroblasts',
- 'Endothelium',
- 'Other']
+pipeline_genes = pd.read_csv(
+            Path(__file__)
+            .resolve()
+            .parent.joinpath('databases', 'pipeline_genes.tsv'),
+        sep='\t')['Gene'].to_list()
 
-def fastqc_unzip(
-        infile: str,
-        edir: str
-):
+def recalculate_tpm(series):
+    """   
+    Recalculates TPM after gene deletion/filtration
+    :param series: pandas series, genes in indeces
+    :return: pandas series with recalculated TPM.
     """
-    Unzip archive to the directory.
-
-    :param infile: zip file
-    :param edir: target directory
+    total_tpm = series.sum()
+    return series.divide(total_tpm) * 1e6
+    
+def parse_target_id(target_id):
+    """   
+    Parses target_id column value (str) to extract HUGO_Gene and Transcript_Type values
+    :param target_id: pandas series, name for trancript from gencode index
+    :return: set of str with HUGO_Gene and Transcript_Type values 
     """
-    print(f'Unzipping {infile} to {edir}...')
-    # Unzip files and put to another folder
-    with zipfile.ZipFile(infile, "r") as zip_ref:
-        random_folder_name = zip_ref.namelist()[0]
-        zip_ref.extractall(edir)
-    return random_folder_name
-
-
-def fastqc_clean(edir: str):
-    """
-    Clean the directory.
-
-    :param edir: directory to clean
-    """
-    print(f'Cleaning directory {edir}...')
-    return shutil.rmtree(Path(edir))
-
-
-def create_fastqc_dirs(
-        cohort_id: str,
-        patient: str,
-        fastqc_zip: str,
-        cohorts_folder: str,
-        files_type: str = 'raw'
-):
-    """
-    Create necessary working directories and return paths to save data.
-
-    :param cohort_id: name of cohort (e.g. "Overman_PAAD")
-    :param patient: patient id
-    :param fastqc_zip: name of archived raw fastqc file
-    :param cohorts_folder: directory where you want to store unpacked and processed files e.g. "/home/sonya/qc"
-    :param files_type: part of filename before extension e.g. "*.fastqc_<files_type>.zip"
-    :return: names of input raw data and filenames where to store postprocessed data for fastqc_cohort function
-    """
-    # Getting patient id
-    sample_id = fastqc_zip.replace(f'.fastqc_{files_type}.zip', '')
-
-    # It seems useless now
-    if len(sample_id.split("-")) == 2:
-        tissue = sample_id.split("-")[1]
-    else:
-        tissue = sample_id.split("-")[1]
-
-    exp = sample_id.split("-")[0]
-
-    outfolder = os.path.join(
-        cohorts_folder,
-        cohort_id,
-        exp,
-        f'FastQC_{tissue}',
-        f'{patient}-{sample_id}_fastqc'
-    )
-
-    try:
-        os.makedirs(outfolder)
-    except OSError:
-        print(f'Folder {outfolder} exists')
-
-    data_in = os.path.join(cohorts_folder, cohort_id, 'tmp', sample_id + '_fastqc/fastqc_data.txt')
-    data_out = os.path.join(outfolder, 'fastqc_data.txt')
-    data_out_gc = os.path.join(outfolder, patient + '-' + sample_id + '.fastqc_filtered.per_sequence_gc_content.txt')
-
-    return data_in, data_out, data_out_gc
-
-def fastqc_gc_content(
-        patient: str,
-        data_in: str,
-        data_out: str,
-        data_out_gc: str
-):
-    """
-    Take raw fastqc data, change sample name (add patient id in case of overlap) and extract gc content.
-
-    :param patient: patient id
-    :param data_in: raw fastqc data file name
-    :param data_out: corrected fastq file name
-    :param data_out_gc: gc content only file name
-    """
-    print('Extracting GC content...')
-
-    if not os.path.exists(data_in):
-        print(f'File {data_in} doesn\'t exist')
-        return None
-
-    with open(data_in, 'r') as infile, \
-            open(data_out, 'w') as outf, \
-            open(data_out_gc, 'w') as outf_gc:
-        # Renaming sample name in the fastqc_data.txt file (adding sample_id)
-        write_gc = False
-
-        for n, line in enumerate(infile):
-
-            if n == 3:
-                print('Old filename: {}'.format(line))
-                line = line.split()
-                new_line = "\t".join((line[0], patient + '_' + line[1]))
-                print('New filename: {}'.format(new_line))
-                outf.writelines(new_line + '\n')
-
-            else:
-                # extracting a block with gc content between two strings
-                if '>>Per sequence GC content' in line:
-                    write_gc = True
-
-                if write_gc and '>>Per sequence GC content' not in line and ">>END_MODULE" not in line:
-                    outf_gc.write(line)
-
-                if write_gc and '>>END_MODULE' in line:
-                    write_gc = False
-
-                outf.writelines(line)
-
-def fastqc_cohort(
-        cohort_id: str,
-        cohorts_folder: str,
-        base_dir: str,
-        patients = None,
-        files_type='raw'
-):
-    """
-    Run fastqc analysis postprocessing of the whole cohort.
-
-    :param cohort_id: name of cohort (e.g. "Overman_PAAD")
-    :param cohorts_folder: directory where you want to store unpacked and processed files e.g. "/home/sonya/qc"
-    :param patients: list of patient names, by default takes all patients
-    :param base_dir: where raw archived fastqc files are stored
-    :param files_type: part of filename before extension e.g. "*.fastqc_<files_type>.zip"
-    """
-    data_folder = os.path.join(base_dir, cohort_id)
-    patients = patients or os.listdir(data_folder)
-    print(f'Patients {patients}')
-    print('***** Processing FastQC reports')
-
-    for patient in tqdm(patients):
-        samples_fastqc = [
-            os.path.basename(x) for x in
-            glob.glob(str(Path(base_dir) / cohort_id / patient / f'*.fastqc_{files_type}.zip'))
-        ]
-
-        for fastqc_zip in samples_fastqc:
-            infile = Path(base_dir) / cohort_id / patient / fastqc_zip
-            wdir = Path(cohorts_folder) / cohort_id / 'tmp'
-
-            try:
-                os.makedirs(wdir)
-            except OSError:
-                pass
-
-            print(f'***** Processing patient {patient}, sample {fastqc_zip}')
-            extracted_filename = fastqc_unzip(infile, wdir)
-
-            # Rename folder extracted from zip to expected name
-            sample_id = os.path.basename(infile).replace(f'.fastqc_{files_type}.zip', '')
-            from_path = os.path.join(wdir, extracted_filename)
-            to_path = os.path.join(wdir, sample_id+'_fastqc')
-            os.rename(from_path, to_path)
-
-            try:
-                data_in, data_out, data_out_gc = create_fastqc_dirs(
-                    cohort_id=cohort_id,
-                    patient=patient,
-                    fastqc_zip=fastqc_zip,
-                    cohorts_folder=cohorts_folder,
-                    files_type = files_type
-                )
-                print(data_in, data_out, data_out_gc)
-                fastqc_gc_content(patient, data_in, data_out, data_out_gc)
-                # print('damn')
-            except Exception as e:
-                print(e)
-                pass
-
-            try:
-                pass
-                fastqc_clean(wdir)
-            except Exception:
-                pass
-def fastqscreen_patient(
-        data_folder: str,
-        cohort_folder: str,
-        project: str,
-        patient: str,
-        fastqscreen_tar: str
-):
-    """
-    Preprocess fastqscreen reports.
-
-    :param data_folder: path to directory with data to be analyzed (e.g. /uftp/mvp-data/ngs.socket/patients/WU_MA_BRCA)
-    :param cohort_folder: path to directory in local server, were output data will be kept
-    :param project: project name
-    :param patient: patient name
-    :param fastqscreen_tar: tar file with fasqscreen results
-    :return: fastq screen reports for patient
-    """
-    sample_id = fastqscreen_tar.replace(".fastqscreen.tar.gz", "")
-    exp = sample_id.split("-")[0]
-    tissue = sample_id.split("-")[1]
-
-    with tarfile.open(os.path.join(data_folder, patient, fastqscreen_tar)) as tar:
-        members = tar.getmembers()
-
-        for member_info in members:
-            member = tar.getmember(member_info.name)
-            # example: WES/FastqScreen_normal/MC117-WES-normal-D00195:266:HJL5VBCX2:2.results_fastqscreen/MC117-WES
-            # -normal-D00195:266:HJL5VBCX2:2_1_screen.txt
-            member.name = "/".join(
-                [exp, "FastqScreen_" + tissue, "-".join([patient, exp, tissue, member.name.split("/")[0]]),
-                 "-".join([patient, member.name.split("/")[1]])])
-            tar.extract(member, path=os.path.join(cohort_folder, project))
-            
-def fastqscreen_cohort(
-        data_folder: str,
-        cohort_folder: str,
-        project: str,
-        patients: str
-):
-    """
-    Process fastqscreen reports.
-
-    :param data_folder: path to directory with data to be analyzed (e.g. /uftp/mvp-data/ngs.socket/patients/WU_MA_BRCA)
-    :param cohort_folder: path to directory in local server, were output data will be kept
-    :param project: project name
-    :param patients: patient list
-    :return: folders with reports of fastq screen for cohort
-    """
-    for patient in tqdm(patients):
-        print('Processing ' + patient)
-        samples_fastqscreen = [
-            os.path.basename(x) for x in glob.glob(
-                os.path.join(data_folder, patient, "*.fastqscreen.tar.gz"))
-        ]
-
-        print("*****Processing FastqScreen reports")
-        if not samples_fastqscreen:
-            print('No fastqscreen reports available')
-            continue
-
-        for fastqscreen_tar in samples_fastqscreen:
-            fastqscreen_patient(data_folder, cohort_folder, project, patient, fastqscreen_tar)
-def adjust_width(
-        cohort_size: int,
-        width = None
-) -> float:
-    """
-    Adjust figure height by cohort size.
-
-    :param cohort_size: size of cohort
-    :param width: desired width, by default adjusted to cohort size
-    :return: adjusted width
-    """
-    if width is not None:
-        width = width
-    elif cohort_size < 40:
-        width = 10
-    else:
-        width = cohort_size / 4
-
-    return width
-
-
-def adjust_height(
-        cohort_size: int,
-        height = None,
-        width: float = 5.0
-):
-    """
-    Adjust figure height by cohort size.
-
-    :param cohort_size: size of cohort
-    :param height: desired height of figure, by default adjusted to cohort size
-    :param width: width to use, 5.0 by default
-    :return: figure size
-    """
-    if height is not None:
-        fig_size = (width, height)
-    elif cohort_size < 40:
-        fig_size = (width, 10.0)
-    else:
-        fig_size = (width, cohort_size / 4)
-
-    return fig_size
-
-def run_multiqc(
-        cohorts_folder: str,
-        cohort_id: str,
-        seq_type: str = 'all',
-        interpreter_path = None
-):
-    """
-    Run multiqc on a given cohort.
-
-    :param cohorts_folder: directory where you want to store unpacked and processed files e.g. "/home/sonya/qc"
-    :param cohort_id: id of the cohort you want to analyze
-    :param seq_type: (all|rna|dna) - available sequencing
-    :param interpreter_path: path to python interpreter for MultiQC, by default use current interpreter
-    """
-    assert seq_type in ('all', 'rna', 'dna'), 'Wrong seq_type argument'
-    os.chdir(os.path.join(cohorts_folder, cohort_id))
-    print('Changed dir to')
-    print(Path().absolute())
-    qc_dirs = "./WES ./RNASeq".split()
-
-    if seq_type == "rna":
-        qc_exist_dirs = [qc_dir for qc_dir in qc_dirs if (os.path.exists(qc_dir)) and ("RNA" in qc_dir)]
-    elif seq_type == "dna":
-        qc_exist_dirs = [qc_dir for qc_dir in qc_dirs if (os.path.exists(qc_dir)) and ("WES" in qc_dir)]
-    else:  # all
-        qc_exist_dirs = [qc_dir for qc_dir in qc_dirs if os.path.exists(qc_dir)]
-
-    if len(qc_exist_dirs) == 0:
-        raise NameError("No directories containing QC files found")
-
-    if interpreter_path is None:
-        interpreter_path = sys.executable
-
-    command = f'{interpreter_path} -m multiqc' \
-              f' --interactive -f ' + ' '.join(qc_exist_dirs) + \
-              ' -n ' + cohort_id + '-' + seq_type
-    print(command)
-    subprocess.check_output(command, shell=True)
-
-
-def intersect_genes_with_pipeline(df, return_genes=False, verbose=True, pipeline_genes=None):
+    fields = target_id.split('|')
+    esembl_id = fields[0]
+    hugo_gene = fields[5]       # HUGO symbol is on the 6th position
+    transcript_type = fields[7]  # transcript_type is on the 8th position
+    return esembl_id, hugo_gene, transcript_type
+    
+def intersect_genes_with_pipeline(df, return_genes=False, verbose=True):
     """
     Intersect genes from the given dataframe with the pipeline genes.
 
@@ -459,13 +111,7 @@ def intersect_genes_with_pipeline(df, return_genes=False, verbose=True, pipeline
     >>> pipeline = {'GeneA', 'GeneD', 'GeneE'}
     >>> intersect_genes_with_pipeline(genes_df, True, pipeline)
     ['GeneA']
-    """
-    if pipeline_genes==None:
-        pipeline_genes = pd.read_csv(
-            Path(__file__)
-            .resolve()
-            .parent.joinpath('databases', 'pipeline_genes.tsv'),
-        sep='\t')['Gene'].to_list()
+    """        
     intersection = set(df.index).intersection(set(pipeline_genes))
     if verbose:
         print(f'{len(intersection)} out of {len(df.index)} genes are intersected with the pipeline ({len(pipeline_genes)} genes).')
@@ -574,55 +220,30 @@ def iterative_pca_outliers(df, return_labels=True):
             print('There are no outliers')
     return labels
 
-
-def check_log_scaling(df, return_non_scaled=False, return_scaling=False, verbose=True):
+def check_log_scale(expressions, return_df=True, return_bool=False):
     """
-    Checks if the provided dataframe is possibly log-scaled based on the mean values.
-    
-    The function calculates the mean of each column in the dataframe and determines if it 
-    might be log-scaled by comparing the maximum of these means to a threshold of 20. If the 
-    maximum mean is below 20, the function infers that the data is possibly log-scaled. If 
-    return_non_scaled is set to True, it then returns the dataframe with the data reverted 
-    back to its original scaling using the inverse of the log2 operation.
-
-    :param df: DataFrame to check for log-scaling.
-    :param return_non_scaled: A flag to decide whether to return the dataframe with the 
-                              data reverted back to its original scaling, if it's determined 
-                              to be log-scaled. Default is False.
-    :return: If return_non_scaled is True and the data is determined to be log-scaled, 
-             returns the dataframe with the data reverted back to its original scale. 
-             Otherwise, None.
-    
-    Example:
-    --------
-    >>> data = pd.DataFrame({
-    ...     'A': [1, 2, 3, 4, 5],
-    ...     'B': [6, 7, 8, 9, 10],
-    ...     'C': [11, 12, 13, 14, 15]
-    ... })
-    >>> check_log_scaling(np.log2(data+1), True)
-    Maximum of average gene values is below 20.
-    Probably Log-scaled
-          A    B    C
-    0  1.0  6.0  11.0
-    1  2.0  7.0  12.0
-    2  3.0  8.0  13.0
-    3  4.0  9.0  14.0
-    4  5.0 10.0  15.0
+    Detects log scaling by max mean value, return scaled df if seems to be raw (max mean value > 20 TPM)
+    :param expressions: pandas.DataFrame - RNAseq expression data with TPM
+    :param return_df: bool, switcher to whether return dataframe or not
+    :param return_bool: bool, will return bool value if switched on: returns False if not log-scaled; True if log-scaled.
+    :return: if seems to be non-scaled, scaled expressions, otherwise same dataframe
     """
-
-    if df.mean().max() > 20:
-        if verbose:
-            print('OK')
-        if return_scaling:
-            return True
-    else:
-        if verbose:
-            print('Maximum of average gene values is below 20.\nProbably Log-scaled')
-        if return_non_scaled:
-            return np.exp2(df) - 1
-        if return_scaling:
+    if expressions.mean().max()>20:
+        if return_bool:
             return False
+        else:
+            print('Seems to be unscaled, scaling...')
+            expressions = np.log2(expressions+1)
+            print('Scaled')
+        
+    else:
+        if return_bool:
+            return True
+        else:
+            print('Seems to be log-scaled')
+        
+    if return_df:
+        return expressions
 
 def percent_zero_columns_for_intersected_genes(df):
     """

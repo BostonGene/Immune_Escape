@@ -1,9 +1,39 @@
 import warnings
 import numpy as np
 import pandas as pd
+from sklearn.decomposition import PCA
+from statsmodels.robust.scale import mad
+from scipy.stats import sem
+from scipy.stats.distributions import rv_continuous
+from math import floor, log10
 
-from sklearn.preprocessing import MinMaxScaler
+def predict_batch(ser, X, batch,k=20):
+    """
+    Calculates euclidean distances for the sample ser in the set space X, then returns the most frequent identified batch from k nearest neighbors. 
+    In case there are 2 equally frequent batches, chooses the first one in the list.
+    :param ser: pandas.Series, indeces - features, values without NaN
+    :param X: pandas.DataFrame, indeces - samples, columns - features, identical to ser.index; values without NaN
+    :param batch: pandas.Series, indeces - samples, same as for X.index, values - str values with batch name
+    :param k: int, number of k nearest neighbors from which to choose the most frequent batch
+    :return: str, the most frequent batch
+    """
+    distances = np.sqrt(((X - ser) ** 2).sum(axis=1))
 
+    nearest_indices = distances.nsmallest(k).index
+
+    nearest_batches = batch.loc[nearest_indices]
+
+    batch_counts = nearest_batches.value_counts()
+
+    max_count = batch_counts.max()
+    most_frequent_batches = batch_counts[batch_counts == max_count].index
+
+    for batch_value in nearest_batches:
+        if batch_value in most_frequent_batches:
+            most_frequent_batch = batch_value
+            break
+
+    return most_frequent_batch
 
 def star_pvalue(pvalue, lev1=0.05, lev2=0.01, lev3=0.001):
     """
@@ -28,7 +58,6 @@ def round_to_1(x):
     :param x: float
     :return: float
     """
-    from math import floor, log10
 
     return round(x, -int(floor(log10(abs(x)))))
 
@@ -65,11 +94,11 @@ def mean_confidence_interval(data, confidence=0.95):
     :param confidence: float, confidence level percentage (default 95%)
     :return: tuple of mean, lower CI, upper CI
     """
-    from scipy import stats
+    
     a = 1.0 * np.array(data)
     n = len(a)
-    m, se = np.mean(a), stats.sem(a)
-    h = se * stats.t.ppf((1 + confidence) / 2., n-1)
+    m, se = np.mean(a), sem(a)
+    h = se * rv_continuous.ppf((1 + confidence) / 2., n-1)
     return m, m-h, m+h
 
 
@@ -83,44 +112,16 @@ class GeneSet(object):
     def __str__(self):
         return '{}\t{}\t{}'.format(self.name, self.descr, '\t'.join(self.genes))
         
-def scale_series(series,feature_range=(0, 1)):
-    name = series.name
-    scaler = MinMaxScaler(feature_range=feature_range)
-    series_2d = series.values.reshape(-1, 1)
-    scaled_series_2d = scaler.fit_transform(series_2d)
-    scaled_series = pd.Series(scaled_series_2d.flatten(), index=series.index)
-    scaled_series.name =name
+def scale_series(series, feature_range=(0, 1)):
+    min_val = series.min()
+    max_val = series.max()
+    range_min, range_max = feature_range
+    scaled_data = (series - min_val) * (range_max - range_min) / (max_val - min_val) + range_min
+    scaled_series = pd.Series(scaled_data, index=series.index)
+    scaled_series.name = series.name
     return scaled_series
 
-    
-def df_fisher_chi2(clusters = pd.Series, response=pd.Series, R=False, NR=True):
-    import pandas as pd
-    from scipy.stats import fisher_exact, chi2_contingency
-    from statsmodels.stats.multitest import multipletests
-    df=pd.crosstab(clusters,response)
-    df.insert(0,'Fisher_pv', 1)
-    df.insert(1,'Chi2_pv', 1)
 
-    for  i in df.index:
-        nr, r = df[R].loc[i], df[NR].loc[i]
-        nrj = df[R].sum() - nr
-        rj = df[NR].sum() - r
-        oddsratio, pvalue = fisher_exact([[nr, r],[nrj, rj]])  
-        if pvalue > 1:
-            pvalue = 1
-        df.at[i,'Fisher_pv'] = pvalue
-
-    for  i in df.index:
-        nr, r = df[R].loc[i], df[NR].loc[i]
-        nrj = df[R].sum() - nr
-        rj = df[NR].sum() - r
-        chi, pvalue, dof, exp = chi2_contingency([[r, nr],[rj, nrj]])  
-        if pvalue > 1:
-            pvalue = 1
-        df.at[i, 'Chi2_pv'] = pvalue
-    _, df['Fisher_pv'],_,_ = multipletests(df['Fisher_pv'],method='fdr_bh')
-    _, df['Chi2_pv'],_,_ = multipletests(df['Chi2_pv'],method='fdr_bh')
-    return df
     
 def sort_by_terms_order(
     data: pd.Series, t_order: list, vector: pd.Series = None
@@ -146,55 +147,6 @@ def sort_by_terms_order(
 
     return np.concatenate(x)
 
-def ssgsea_score(ranks, genes, use_old_formula = False):
-    """
-    Calculates single sample GSEA score based on vector of gene expression ranks.
-    Only overlapping genes will be analyzed.
-    The original article describing the ssGSEA formula: https://doi.org/10.1038/nature08460.
-    We use adapted fast function. Result is the same as in analogous packages (like GSVA).
-
-    Note: formula was updated in November 2023.
-    Please visit Wiki-page for more details: https://bostongene.atlassian.net/wiki/spaces/BIT/pages/3427991553/ssGSEA
-
-    :param ranks: DataFrame with gene expression ranks; samples in columns and genes in rows
-    :param genes: list or set, genes of interest
-    :param use_old_formula: (Default: False) if true calculates old ssGSEA-BostonGene Formula
-    :return: Series with ssGSEA scores for samples
-    """
-
-    # Finding common_genes
-    # Note: List is needed here because pandas can not do .loc with sets
-    common_genes = list(set(genes).intersection(set(ranks.index)))
-
-    # If not intersections were found
-    if not common_genes:
-        return pd.Series([0.0] * len(ranks.columns), index=ranks.columns)
-
-    # Ranks of genes inside signature
-    sranks = ranks.loc[common_genes]
-
-    if use_old_formula:
-        return (sranks ** 1.25).sum() / (sranks ** 0.25).sum() - (len(ranks.index) - len(common_genes) + 1) / 2
-
-    return (sranks ** 1.25).sum() / (sranks ** 0.25).sum() - (len(ranks.index) + 1) / 2
-
-
-def ssgsea_formula(data, gene_sets, rank_method='max'):
-    """
-    Return DataFrame with ssgsea scores
-    Only overlapping genes will be analyzed
-
-    :param data: pd.DataFrame, DataFrame with samples in columns and variables in rows
-    :param gene_sets: dict, keys - processes, values - bioreactor.gsea.GeneSet
-    :param rank_method: str, 'min' or 'max'.
-    :return: pd.DataFrame, ssgsea scores, index - genesets, columns - patients
-    """
-
-    ranks = data.T.rank(method=rank_method, na_option='bottom')
-
-    return pd.DataFrame({gs_name: ssgsea_score(ranks, gene_sets[gs_name].genes)
-                         for gs_name in list(gene_sets.keys())})
-
 
 def median_scale(data, clip=None, c=1., exclude=None, axis=0):
     """
@@ -213,7 +165,6 @@ def median_scale(data, clip=None, c=1., exclude=None, axis=0):
 
     :return: pd.DataFrame
     """
-    from statsmodels.robust.scale import mad
 
     if exclude is not None:
         data_filtered = data.reindex(data.index & exclude[~exclude].index)
@@ -269,27 +220,6 @@ def to_common_samples(df_list=()):
         warnings.warn('No common samples!')
     return [df_list[i].loc[list(cs)] for i in range(len(df_list))]
 
-
-def cut_clustermap_tree(g, n_clusters=2, by_cols=True, name='Clusters'):
-    """
-    Cut clustermap into desired number of clusters. See scipy.cluster.hierarchy.cut_tree documentation.
-    :param g:
-    :param n_clusters:
-    :param by_cols:
-    :param name:
-    :return: pd.Series
-    """
-    from scipy.cluster.hierarchy import cut_tree
-    if by_cols:
-        link = g.dendrogram_col.linkage
-        index = g.data.columns
-    else:
-        link = g.dendrogram_row.linkage
-        index = g.data.index
-
-    return pd.Series(cut_tree(link, n_clusters=n_clusters)[:, 0], index=index, name=name) + 1
-
-
 def pivot_vectors(vec1, vec2, na_label_1=None, na_label_2=None):
     """
     Aggregates 2 vectors into a table with amount of pairs (vec1.x, vec2.y) in a cell
@@ -329,9 +259,9 @@ def pivot_vectors(vec1, vec2, na_label_1=None, na_label_2=None):
     return pd.pivot_table(data=sub_df, columns=name1,
                           index=name2, values='N', aggfunc=sum).fillna(0).astype(int)
 
+
+
 def iterative_pca_outliers(df, return_labels=True):
-    from sklearn.decomposition import PCA
-    from scipy.stats import median_abs_deviation as mad
     pca = PCA(n_components=2)
     continue_search = True
     labels = []

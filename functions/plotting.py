@@ -13,9 +13,108 @@ from scipy import stats
 from functions.utils import get_pvalue_string
 from matplotlib.lines import Line2D
 from functions.utils import round_to_1
-from matplotlib.colors import LinearSegmentedColormap
+from matplotlib.colors import LinearSegmentedColormap, to_hex, rgb_to_hsv
+import distinctipy
+
 default_cmap = LinearSegmentedColormap.from_list("default_cmap", ["navy", "white", "crimson"])
 
+cells_p = {'B_cells': '#004283',
+ 'Plasma_B_cells': '#0054A8',
+ 'Non_plasma_B_cells': '#0066CC',
+ 'Mature_B_cells': '#3889DB',
+ 'Naive_B_cells': '#78B0E9',
+ 'T_cells': '#285A51',
+ 'CD8_T_cells': '#31685E',
+ 'CD8_T_cells_PD1_high': '#3C776C',
+ 'CD8_T_cells_PD1_low': '#3C776C',
+ 'CD4_T_cells': '#61A197',
+ 'Th': '#70B0A5',
+ 'Th1_cells': '#7FBEB3',
+ 'Th2_cells': '#8FCCC2',
+ 'Th17_cells': '#9DD4C9',
+ 'Naive_T_helpers': '#ACDCD3',
+ 'Tregs': '#CBEBE6',
+ 'NK_cells': '#6181A1',
+ 'Cytotoxic_NK_cells': '#7F9EBE',
+ 'Regulatory_NK_cells': '#9DB8D4',
+ 'Myeloid_cells': '#8C0021',
+ 'Monocytes': '#6A3C77',
+ 'Macrophages': '#865494',
+ 'Macrophages_M1': '#A370B0',
+ 'Macrophages_M2': '#BF8FCC',
+ 'Microglia': '#6B4F73',
+ 'MDSC': '#9F86A6',
+ 'Granulocytes': '#D93158',
+ 'Eosinophils': '#B7002B',
+ 'Neutrophils': '#EC849C',
+ 'Basophils': '#854855',
+ 'Mast_cells': '#B0707D',
+ 'Dendritic_cells': '#50285B',
+ 'Endothelium': '#DCB7AC',
+ 'Vascular_endothelium_cells': '#DCB7AC',
+ 'Lymphatic_endothelium_cells': '#998078',
+ 'Stromal_cells': '#CC7A00',
+ 'Fibroblasts': '#FF9500',
+ 'iCAF': '#FFB341',
+ 'myCAF': '#FFCD83',
+ 'Follicular_dendritic_cells': '#D2871E',
+ 'Adypocytes': '#ECDAA7',
+ 'Fibroblastic_reticular_cells': '#995B00',
+ 'Other': '#C2C1C7',
+ 'Epithelial_cells': '#DFD3CF',
+ 'Muscles': '#DF714B',
+ 'Bones': '#96A4B3'}
+
+cells_o = ['NK_cells',
+ 'CD4_T_cells',
+ 'CD8_T_cells',
+ 'B_cells',
+ 'Monocytes',
+ 'Macrophages',
+ 'Neutrophils',
+ 'Fibroblasts',
+ 'Endothelium',
+ 'Other']
+
+def palette_from_series(series, exclude_colors=['black', 'white'], pastel_factor=0, n_attempts=1000, colorblind_type='Deuteranomaly', rng=42, color_format='HEX'):
+    '''
+    Generates a color palette from a pandas series, ensuring distinct colors for each category.
+
+    Parameters:
+    series (pandas.Series): A series with categories.
+    exclude_colors (list): List of colors to exclude.
+    pastel_factor (float): If >0, generates paler colors.
+    n_attempts (int): Number of attempts to generate distinct colors.
+    colorblind_type (str): Type of colorblindness to account for.
+    rng (int): Random number generator seed.
+    color_format (str): The format of the color output ('HEX', 'RGBA', 'HSL').
+
+    Returns:
+    dict: A dictionary mapping categories to colors.
+    '''
+
+    # Convert excluded colors from HEX to RGB
+    exclude_colors_rgb = [tuple(int(to_hex(hex_color).strip('#')[i:i+2], 16)/255 for i in (0, 2, 4)) for hex_color in exclude_colors] if len(exclude_colors)!=0 else exclude_colors
+
+    # Get unique categories
+    categories = series.unique()
+    n_colors = len(categories)
+
+    # Get distinct colors
+    colors = distinctipy.get_colors(n_colors=n_colors, exclude_colors=exclude_colors_rgb, pastel_factor=pastel_factor, n_attempts=n_attempts, colorblind_type=colorblind_type, rng=rng)
+
+    # Format colors according to the specified format
+    if color_format == 'HEX':
+        color_dict = {category: to_hex(color) for category, color in zip(categories, colors)}
+    elif color_format == 'RGBA':
+        color_dict = {category: color for category, color in zip(categories, colors)}
+    elif color_format == 'HSL':
+        color_dict = {category: rgb_to_hsv(*color) for category, color in zip(categories, colors)}
+    else:
+        raise ValueError("Unsupported color format. Choose 'HEX', 'RGBA', or 'HSL'.")
+
+    return color_dict
+    
 def simple_scatter(x, y, ax=None, title='', color='b', figsize=(5, 5), s=20, **kwargs):
     """
     Plot a scatter for 2 vectors. Only samples with common indexes are plotted.

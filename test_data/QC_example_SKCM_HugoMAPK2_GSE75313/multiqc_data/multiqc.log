@@ -1,0 +1,3 @@
+[2024-10-10 17:23:19,018] multiqc.core.file_search                           [INFO   ]  Search path: /home/jovyan/projects/Immune_Escape/test_data/QC_example_SKCM_HugoMAPK2_GSE75313
+[2024-10-10 17:23:25,629] multiqc.modules.fastq_screen.fastq_screen          [INFO   ]  Found 44 reports
+[2024-10-10 17:23:25,709] multiqc.modules.fastqc.fastqc                      [INFO   ]  Found 44 reports
