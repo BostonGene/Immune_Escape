@@ -56,6 +56,8 @@ Starting with identified batches of data, QC-checked, with removed outliers, and
 ![Classification_workflow](pics/Classification_workflow.png)  
 <p align="center">Diagram for sample classification</p>
 
-[Classify_samples.ipynb](Classify_samples.ipynb) — notebook with example classification for the cohort with batch size > 10.
 
-[Get_reference_cohort_and_classify.ipynb](Get_reference_cohort_and_classify.ipynb) — notebook with additional step for finding the reference. Not that we use raw ssGSEA and PROGENy to find nearest batch, which works as well as via expression data; we show it in [Test_mapper.ipynb](Test_mapper.ipynb).
+**Notebooks description**
+- [Classify_samples.ipynb](Classify_samples.ipynb) — notebook with example classification for the cohort with batch size > 10. Input: expression dataframe (HUGO genes in rows, samples in columns), output: series of Immune Escape classes predicted for the samples. See how to prepare expression dataframe in [DATA_AND_QC.md](DATA_AND_QC.md).
+
+- [Get_reference_cohort_and_classify.ipynb](Get_reference_cohort_and_classify.ipynb) — notebook with additional step for finding the reference.  Input: expression dataframe (HUGO genes in rows, samples in columns), output: series of Immune Escape classes predicted for the samples; predicted batch series for the samples. See how to prepare expression dataframe in [DATA_AND_QC.md](DATA_AND_QC.md). See tests for the method in [Test_mapper.ipynb](Test_mapper.ipynb); test show that for random 1000 samples for the cohort weighted F1 is 0.81 accounting for Unclassified samples, and 0.86 not accounting for the latter.

@@ -55,6 +55,9 @@ result_logTPM_series = result_for_qc[(result_for_qc.ENSEMBL_ID.isin(target_trans
 result_logTPM_series = recalculate_tpm(result_logTPM_series)
 
 result_logTPM_series = check_log_scale(result_logTPM_series) #Resulting series used in analysis for the sample
+
+result_for_qc.to_csv('kallisto_pseudocounts.tsv', sep='\t') # saving data for QC based on kallisto pseudocounts (example file in test_data/QC_example_SKCM_HugoMAPK2_GSE75313/kallisto_pseudocounts.tsv)
+result_logTPM_series.to_csv('kallisto_tpm.tsv', sep='\t') # saving data for QC based on TPM values, applicable for both RNAseq and microarray expression dataframes (example file in test_data/QC_example_SKCM_HugoMAPK2_GSE75313/kallisto_tpm.tsv)
 ```
 	
 

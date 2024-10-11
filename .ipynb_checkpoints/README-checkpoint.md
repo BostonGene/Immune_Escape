@@ -27,7 +27,7 @@ The identified Immune Escape TME types are as follows:
 | Immune Desert                    | D            | Cluster was marked by the lowest immune cell infiltration and lowest presence of stroma components, with occasional hypoxia.                                                                                                                                                                                 |
 | Faintly Infiltrated, Angiogenic  | D/Ang        | Low immune cell content (mostly lymphocytes) with increased TCR and BCR diversity compared to other desert types, moderate angiogenesis and endothelial cell levels.                                                                                                                                         |
 
-Immune Escape class annotation for TCGA samples is in [data/TCGA_IE_class_prediction.tsv](data/TCGA_IE_class_prediction.tsv) ('IE_Class' column; rest — probabilities).
+Immune Escape class annotation for TCGA samples is in [data/TCGA_IE_class_prediction.tsv](data/TCGA_IE_class_prediction.tsv) ('IE_Class' column; rest — probabilities). Immune Escape features calculated for >37000 samples are in [data/scaled_features.tsv](data/scaled_features.tsv) 
 
 ## Citation
 If software, data, and/or website are used in your publication, please cite [CITATION] and make a reference to this repository.
@@ -56,6 +56,8 @@ Starting with identified batches of data, QC-checked, with removed outliers, and
 ![Classification_workflow](pics/Classification_workflow.png)  
 <p align="center">Diagram for sample classification</p>
 
-[Classify_samples.ipynb](Classify_samples.ipynb) — notebook with example classification for the cohort with batch size > 10.
 
-[Get_reference_cohort_and_classify.ipynb](Get_reference_cohort_and_classify.ipynb) — notebook with additional step for finding the reference. Not that we use raw ssGSEA and PROGENy to find nearest batch, which works as well as via expression data; we show it in [Test_mapper.ipynb](Test_mapper.ipynb).
+**Notebooks**
+- [Classify_samples.ipynb](Classify_samples.ipynb) — notebook with example classification for the cohort with batch size > 10. Input: expression dataframe (HUGO genes in rows, samples in columns), output: series of Immune Escape classes predicted for the samples. See how to prepare expression dataframe in [DATA_AND_QC.md](DATA_AND_QC.md).
+
+- [Get_reference_cohort_and_classify.ipynb](Get_reference_cohort_and_classify.ipynb) — notebook with additional step for finding the reference.  Input: expression dataframe (HUGO genes in rows, samples in columns), output: series of Immune Escape classes predicted for the samples; predicted batch series for the samples. See how to prepare expression dataframe in [DATA_AND_QC.md](DATA_AND_QC.md). See tests for the method in [Test_mapper.ipynb](Test_mapper.ipynb); test show that for random 1000 samples for the cohort weighted F1 is 0.81 accounting for Unclassified samples, and 0.86 not accounting for the latter.
