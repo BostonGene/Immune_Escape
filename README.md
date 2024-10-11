@@ -27,7 +27,7 @@ The identified Immune Escape TME types are as follows:
 | Immune Desert                    | D            | Cluster was marked by the lowest immune cell infiltration and lowest presence of stroma components, with occasional hypoxia.                                                                                                                                                                                 |
 | Faintly Infiltrated, Angiogenic  | D/Ang        | Low immune cell content (mostly lymphocytes) with increased TCR and BCR diversity compared to other desert types, moderate angiogenesis and endothelial cell levels.                                                                                                                                         |
 
-Immune Escape class annotation for TCGA samples is in [data/TCGA_IE_class_prediction.tsv](data/TCGA_IE_class_prediction.tsv) ('IE_Class' column; rest — probabilities). Immune Escape features calculated for >37000 samples are in [data/scaled_features.tsv](data/scaled_features.tsv) 
+Immune Escape class annotation for TCGA samples is in [data/TCGA_class_prediction.tsv](data/TCGA_class_prediction.tsv) ('IE_Class' column; rest — probabilities). Immune Escape features calculated for >37000 samples are in [data/Metacohort_full_scaled_features.tsv.gz](data/Metacohort_full_scaled_features.tsv.gz) 
 
 ## Citation
 If software, data, and/or website are used in your publication, please cite [CITATION] and make a reference to this repository.
@@ -58,4 +58,4 @@ Starting with identified batches of data, QC-checked, with removed outliers, and
 
 [Classify_samples.ipynb](Classify_samples.ipynb) — notebook with example classification for the cohort with batch size > 10.
 
-[Get_reference_cohort_and_classify.ipynb](Get_reference_cohort_and_classify.ipynb) — notebook with additional step for finding the reference. Not that we use raw ssGSEA and PROGENy to find nearest batch, which works as well as via expression data; we show it in [Test_mapper.ipynb](Test_mapper.ipynb).
+[Get_reference_cohort_and_classify.ipynb](Get_reference_cohort_and_classify.ipynb) — notebook with additional step for finding the reference. Not that we use raw ssGSEA and PROGENy to find nearest batch, which works as well as via expression data; we show it in [test_data/Test_mapper.ipynb](test_data/Test_mapper.ipynb).
