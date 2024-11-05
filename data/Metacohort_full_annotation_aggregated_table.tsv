@@ -1,0 +1,220 @@
+	Diagnosis	Cohort	RNA Batch	Number of samples	Usage
+0	Breast Cancer	TCGA-BRCA	BRCA	1001	Discovery
+1	Head And Neck Squamous Cell Carcinoma	TCGA-HNSC	HNSC	492	Discovery
+2	Thyroid Carcinoma	TCGA-THCA	THCA	481	Discovery
+3	Lung Adenocarcinoma	TCGA-LUAD	LUAD	474	Discovery
+4	Lung Squamous Cell Carcinoma	TCGA-LUSC	LUSC	465	Discovery
+5	Kidney Renal Clear Cell Carcinoma	TCGA-KIRC	KIRC	460	Discovery
+6	Skin Cutaneous Melanoma	TCGA-SKCM	SKCM	432	Discovery
+7	Prostate Adenocarcinoma	TCGA-PRAD	PRAD	409	Discovery
+8	Bladder Urothelial Carcinoma	TCGA-BLCA	BLCA	365	Discovery
+9	Stomach Adenocarcinoma	TCGA-STAD	STAD	359	Discovery
+10	Liver Hepatocellular Carcinoma	TCGA-LIHC	LIHC	333	Discovery
+11	Ovarian Cancer	TCGA-OV	OV	307	Discovery
+12	Cervical Squamous Cell Carcinoma And Endocervical Adenocarcinoma	TCGA-CESC	CESC	289	Discovery
+13	Kidney Renal Papillary Cell Carcinoma	TCGA-KIRP	KIRP	267	Discovery
+14	Colon Adenocarcinoma	TCGA-COAD	COAD	255	Discovery
+15	Esophageal Carcinoma	TCGA-ESCA	ESCA	161	Discovery
+16	Uterine Corpus Endometrial Carcinoma	TCGA-UCEC	UCEC	160	Discovery
+17	Pancreatic Adenocarcinoma	TCGA-PAAD	PAAD	139	Discovery
+18	Pheochromocytoma And Paraganglioma	TCGA-PCPG	PCPG	136	Discovery
+19	Rectum Adenocarcinoma	TCGA-READ	READ	78	Discovery
+20	Uveal Melanoma	TCGA-UVM	UVM	76	Discovery
+21	Adrenocortical Carcinoma	TCGA-ACC	ACC	73	Discovery
+22	Kidney Chromophobe	TCGA-KICH	KICH	62	Discovery
+23	Uterine Carcinosarcoma	TCGA-UCS	UCS	55	Discovery
+24	Cholangiocarcinoma	TCGA-CHOL	CHOL	33	Discovery
+25	Breast Cancer	GSE96058	BRCA_LumiNorm_GSE96058	2625	Validation
+26	Breast Cancer	Metabric	BRCA_LumiNorm_Metabric	1488	Validation
+27	Colorectal Adenocarcinoma	GSE131418	COREAD_META_GSE131418	1135	Validation
+28	Colorectal Adenocarcinoma	GSE39582	COREAD_META_GSE39582	585	Validation
+29	Colorectal Adenocarcinoma	GSE196576	COREAD_META_PRJNA805525	578	Validation
+30	Breast Cancer	E-MTAB-365	BRCA_META_E-MTAB-365	537	Validation
+31	Prostate Adenocarcinoma	GSE141551	Prostate_Adenocarcinoma_GSE141551	503	Validation
+32	Breast Cancer	GSE102484	BRCA_LumiNorm_GSE102484	452	Validation
+33	Lung Adenocarcinoma	GSE72094	Lung_Adenocarcinoma_GSE72094_batch_0	442	Validation
+34	Ovarian Cancer	GSE140082	OV_META_GSE140082	380	Validation
+35	Colorectal Adenocarcinoma	GSE156915	COREAD_META_GSE156915	361	Validation
+36	Stomach Adenocarcinoma	GSE84437	Stomach_Adenocarcinoma_GSE84437_1	357	Validation
+37	Breast Cancer	GSE96058	BRCA_Her2_GSE96058	348	Validation
+38	Bladder Urothelial Carcinoma	GSE32894	Urothelial_Cancer_GSE32894	308	Validation
+39	Breast Cancer	GSE96058	BRCA_Basal_GSE96058	300	Validation
+40	Stomach Adenocarcinoma	GSE62254	Stomach_Adenocarcinoma_ACRG	300	Validation
+41	Bladder Urothelial Carcinoma	GSE87304	Urothelial_Cancer_GSE87304	298	Validation
+42	Breast Cancer	GSE17705	BRCA_META_GSE17705	298	Validation
+43	Breast Cancer	GSE25066	BRCA_LumiNorm_GSE25066	295	Validation
+44	Colorectal Adenocarcinoma	GSE14333	COREAD_META_GSE14333	288	Validation
+45	Ovarian Cancer	GSE9891	OV_META_GSE9891	285	Validation
+46	Breast Cancer	GSE20194	BRCA_META_GSE20194	278	Validation
+47	Bladder Urothelial Carcinoma	GSE83586	Urothelial_Cancer_GSE83586	277	Validation
+48	Breast Cancer	GSE3494	BRCA_META_GSE3494	251	Validation
+49	Cervical Squamous Cell Carcinoma And Endocervical Adenocarcinoma	GSE44001	Uterine_Cervical_Neoplasm_GSE44001_GPL14951_244	244	Validation
+50	Breast Cancer	GSE20685	BRCA_LumiNorm_GSE20685	235	Validation
+51	Breast Cancer	Metabric	BRCA_Basal_METABRIC	231	Validation
+52	Pancreatic Adenocarcinoma	E-MTAB-6134	Pancreatic_Adenocarcinoma_Puleo_France	229	Validation
+53	Stomach Adenocarcinoma	GSE184336	Stomach_Adenocarcinoma_PUB_Xue	222	Validation
+54	Breast Cancer	FUSCCTNBC	BRCA_Basal_FUSCCTNBC	219	Validation
+55	Glioblastoma	CGGA	Glioblastoma_cgga	218	Validation
+56	Lung Adenocarcinoma	GSE31210	Lung_Adenocarcinoma_GSE31210_batch_0	217	Validation
+57	Skin Cutaneous Melanoma	GSE65904	SKCM_META_Cirenajwis	214	Validation
+58	Breast Cancer	GSE25066	BRCA_Basal_GSE25066	213	Validation
+59	Lung Adenocarcinoma	GSE68465	Lung_Adenocarcinoma_GSE68465_batch_0	212	Validation
+60	Ovarian Cancer	GSE2109	OV_META_GSE2109	203	Validation
+61	Breast Cancer	GSE76124	BRCA_META_GSE76124	198	Validation
+62	Pancreatic Adenocarcinoma	E‐MTAB‐1791	Pancreatic_Adenocarcinoma_Bauer	195	Validation
+63	Glioblastoma	GSE108474	Glioblastoma_rembrandt	194	Validation
+64	Stomach Adenocarcinoma	GSE15459	Stomach_Adenocarcinoma_Singapore_b1	192	Validation
+65	Lung Adenocarcinoma	GSE41271	Lung_Adenocarcinoma_GSE41271_batch_0	182	Validation
+66	Breast Cancer	GSE103091	BRCA_Basal_GSE103091	181	Validation
+67	Colorectal Adenocarcinoma	GSE17536	COREAD_META_GSE17536	176	Validation
+68	Breast Cancer	Metabric	BRCA_Her2_Metabric	174	Validation
+69	Ovarian Cancer	GSE53963	Ovarian_Neoplasm_GSE53963_red	174	Validation
+70	Ovarian Cancer	GSE26712	OV_META_GSE26712	171	Validation
+71	Bladder Urothelial Carcinoma	GSE13507	Urothelial_Cancer_GSE13507	160	Validation
+72	Breast Cancer	GSE50948	BRCA_META_GSE50948	156	Validation
+74	Stomach Adenocarcinoma	GSE26253	Stomach_Adenocarcinoma_SMC-2_0	155	Validation
+73	Lung Adenocarcinoma	GSE119267	Lung_Adenocarcinoma_GSE119267_batch_0	155	Validation
+75	Ovarian Cancer	GSE13876	OV_META_GSE13876	153	Validation
+76	Pancreatic Adenocarcinoma	PACA_AU_MA	Pancreatic_Adenocarcinoma_PACA_AU_MA	146	Validation
+77	Pancreatic Adenocarcinoma	GSE71729	Pancreatic_Adenocarcinoma_GSE71729	145	Validation
+78	Breast Cancer	GSE41998	BRCA_Basal_GSE41998	144	Validation
+79	Stomach Adenocarcinoma	GSE26253	Stomach_Adenocarcinoma_SMC-2_1	144	Validation
+80	Bladder Urothelial Carcinoma	GSE48075	Urothelial_Cancer_GSE48075	142	Validation
+81	Pancreatic Adenocarcinoma	CPTAC3	Pancreatic_Adenocarcinoma_CPTAC	140	Validation
+82	Breast Cancer	GSE12093	BRCA_META_GSE12093	136	Validation
+83	Breast Cancer	SCANB	BRCA_META_SCANB	136	Validation
+84	Breast Cancer	GSE45255	BRCA_META_GSE45255	135	Validation
+85	Stomach Adenocarcinoma	GSE26253	Stomach_Adenocarcinoma_SMC-2_2	133	Validation
+86	Breast Cancer	GSE102484	BRCA_Her2_GSE102484	131	Validation
+87	Bladder Urothelial Carcinoma	GSE124305	Urothelial_Cancer_GSE124305	129	Validation
+88	Ovarian Cancer	GSE51088	Ovarian_Neoplasm_GSE51088	127	Validation
+89	Skin Cutaneous Melanoma	GSE59455	SKCM_META_Budden	126	Validation
+90	Stomach Adenocarcinoma	GSE113255	Stomach_Adenocarcinoma_PUB_Kim_GSE113255	126	Validation
+91	Colorectal Adenocarcinoma	GSE72970	COREAD_META_GSE72970	124	Validation
+92	Colorectal Adenocarcinoma	GSE38832	COREAD_META_GSE38832	122	Validation
+93	Lung Adenocarcinoma	GSE50081	Lung_Adenocarcinoma_GSE50081_batch_0	122	Validation
+94	Breast Cancer	GSE42568	BRCA_META_GSE42568	121	Validation
+95	Breast Cancer	GSE20181	BRCA_META_GSE20181	118	Validation
+96	Breast Cancer	GSE93204	BRCA_META_GSE93204	118	Validation
+97	Pancreatic Adenocarcinoma	GSE62165	Pancreatic_Adenocarcinoma_GSE62165	118	Validation
+98	Ovarian Cancer	PMID17290060	OV_META_PMID17290060	117	Validation
+99	Lung Adenocarcinoma	GSE68465	Lung_Adenocarcinoma_GSE68465_batch_1	116	Validation
+100	Breast Cancer	GSE19615	BRCA_META_GSE19615	115	Validation
+101	Lung Adenocarcinoma	GSE68465	Lung_Adenocarcinoma_GSE68465_batch_2	115	Validation
+102	Skin Cutaneous Melanoma	phs001036	SKCM_META_Liu	115	Validation
+103	Colorectal Adenocarcinoma	GSE209746	COREAD_META_GSE209746	114	Validation
+104	Colorectal Adenocarcinoma	GSE183984	COREAD_META_GSE183984	113	Validation
+105	Prostate Adenocarcinoma	GSE70768	Prostate_Adenocarcinoma_GSE70768	113	Validation
+106	Glioma	GSE72951	Glioma_META_GSE72951	112	Validation
+107	Stomach Adenocarcinoma	GSE54129	Stomach_Adenocarcinoma_GSE54129	111	Validation
+108	Ovarian Cancer	GSE17260	OV_META_GSE17260	110	Validation
+110	Stomach Adenocarcinoma	GSE26901	Stomach_Adenocarcinoma_GSE26901	109	Validation
+109	Skin Cutaneous Melanoma	GSE91061	SKCM_META_Riaz	109	Validation
+111	Ovarian Cancer	GSE26193	OV_META_GSE26193	107	Validation
+112	Ovarian Cancer	GSE73614	OV_META_GSE73614	107	Validation
+113	Colorectal Adenocarcinoma	CPTAC2	COREAD_META_CPTAC2	106	Validation
+114	Lung Squamous Cell Carcinoma	CPTAC3	LUSC_META_FF_RNAseqTotal	106	Validation
+115	Breast Cancer	GSE106977	BRCA_Basal_GSE106977	105	Validation
+116	Lung Adenocarcinoma	GSE37745	Lung_Adenocarcinoma_GSE37745_batch_0	105	Validation
+117	Lung Adenocarcinoma	CPTAC3	Lung_Adenocarcinoma_PUB_LUAD_CPTAC3_batch_0	102	Validation
+118	Lung Adenocarcinoma	GSE81089	Lung_Adenocarcinoma_PUB_LUAD_PRJNA320473_batch_0	101	Validation
+119	Ovarian Cancer	CPTAC2	OV_META_CPTAC2	101	Validation
+120	Breast Cancer	GSE102484	BRCA_META_GSE102484	100	Validation
+122	Ovarian Cancer	GSE6008	OV_META_GSE6008	99	Validation
+121	Bladder Urothelial Carcinoma	GSE154261	Urothelial_Cancer_PUB_BLCA_Robertson_GSE154261	99	Validation
+123	Uterine Corpus Endometrial Carcinoma	CPTAC3	UCEC_META_CPTAC3	98	Validation
+124	Colorectal Adenocarcinoma	PRJNA387172	COREAD_META_PRJNA387172	97	Validation
+217	Colorectal Adenocarcinoma	GSE104645	COREAD_META_GSE104645_1	97	Validation
+218	Colorectal Adenocarcinoma	GSE104645	COREAD_META_GSE104645_2	96	Validation
+125	Ovarian Cancer	GSE20565	OV_META_GSE20565	96	Validation
+126	Breast Cancer	GSE5847	BRCA_META_GSE5847	95	Validation
+128	Lung Adenocarcinoma	GSE40791	Lung_Adenocarcinoma_GSE40791_batch_0	94	Validation
+127	Colorectal Adenocarcinoma	GSE37364	COREAD_META_GSE37364	94	Validation
+129	Prostate Adenocarcinoma	GSE70769	Prostate_Adenocarcinoma_GSE70769	94	Validation
+130	Bladder Urothelial Carcinoma	GSE31684	Urothelial_Cancer_GSE31684	93	Validation
+131	Stomach Adenocarcinoma	GSE26899	Stomach_Adenocarcinoma_GSE26899	93	Validation
+132	Prostate Adenocarcinoma	GSE120741	Prostate_Adenocarcinoma_Porto	92	Validation
+134	Uterine Corpus Endometrial Carcinoma	GSE17025	UCEC_META_GSE17025	91	Validation
+133	Skin Cutaneous Melanoma	ERP105482	SKCM_META_Gide	91	Validation
+135	Astrocytoma	GSE48865	Glioma_META_GSE48865	88	Validation
+136	Cervical Squamous Cell Carcinoma And Endocervical Adenocarcinoma	GSE146114	Uterine_Cervical_Neoplasm_GSE146114_GPL6884	84	Validation
+137	Lung Adenocarcinoma	GSE94601	Lung_Adenocarcinoma_GSE94601_batch_0	83	Validation
+138	Skin Cutaneous Melanoma	GSE8401	SKCM_META_Xu	83	Validation
+139	Pancreatic Adenocarcinoma	GSE184585	Pancreatic_Adenocarcinoma_Balach	82	Validation
+140	Lung Squamous Cell Carcinoma	GSE41271	LUSC_GSE41271	81	Validation
+145	Stomach Adenocarcinoma	GSE122401	Stomach_Adenocarcinoma_PUB_Hwang	80	Validation
+142	Lung Squamous Cell Carcinoma	GSE181043	LUSC_META_FF_PolyA_NStranded_and_SStranded	80	Validation
+144	Pancreatic Adenocarcinoma	E-MTAB-6134	Pancreatic_Adenocarcinoma_Puleo_Belgium	80	Validation
+143	Ovarian Cancer	GSE14764	OV_META_GSE14764	80	Validation
+141	Glioblastoma	GSE48865	Glioma_META_GSE48865	80	Validation
+146	Colorectal Adenocarcinoma	GSE5851	COREAD_META_GSE5851	79	Validation
+147	Skin Cutaneous Melanoma	GSE54467	SKCM_META_AJCC_1	79	Validation
+148	Pancreatic Adenocarcinoma	PACA_AU_RNA	Pancreatic_Adenocarcinoma_PACA_AU_RNA	78	Validation
+149	Lung Adenocarcinoma	GSE43580	Lung_Adenocarcinoma_GSE43580_batch_0	76	Validation
+150	Stomach Adenocarcinoma	GSE84437	Stomach_Adenocarcinoma_GSE84437_2	76	Validation
+151	Breast Cancer	GSE59515	BRCA_META_GSE59515	75	Validation
+153	Lung Squamous Cell Carcinoma	GSE43580	LUSC_GSE43580	73	Validation
+152	Head And Neck Squamous Cell Carcinoma	GSE65858	Squamous_Cell_Carcinoma_of_the_Head_and_Neck_GSE65858	73	Validation
+154	Stomach Adenocarcinoma	GSE29272	Stomach_Adenocarcinoma_GSE29272_2	72	Validation
+156	Colorectal Adenocarcinoma	GSE39084	COREAD_META_GSE39084	70	Validation
+155	Breast Cancer	GSE47994	BRCA_Basal_GSE47994	70	Validation
+157	Breast Cancer	GSE21653	BRCA_Basal_GSE21653	69	Validation
+158	Pancreatic Adenocarcinoma	GSE62452	Pancreatic_Adenocarcinoma_GSE62452	69	Validation
+159	Thyroid Carcinoma	GSE27155	Thyroid_Neoplasm_GSE27155	68	Validation
+160	Lung Squamous Cell Carcinoma	GSE37745	LUSC_GSE37745	66	Validation
+161	Lung Squamous Cell Carcinoma	GSE81089	LUSC_META_FF_PolyA_NStranded_PRJNA320473	66	Validation
+162	Lung Squamous Cell Carcinoma	GSE81089	LUSC_PUB_LUAD_PRJNA320473	66	Validation
+163	Cervical Squamous Cell Carcinoma And Endocervical Adenocarcinoma	GSE151666	Uterine_Cervical_Neoplasm_PUB_CESC_GSE151666	65	Validation
+164	Stomach Adenocarcinoma	GSE13861	Stomach_Adenocarcinoma_GSE13861	65	Validation
+165	Uterine Corpus Endometrial Carcinoma	GSE106191	UCEC_META_GSE106191	64	Validation
+166	Colorectal Adenocarcinoma	GSE146009	COREAD_META_GSE146009	63	Validation
+167	Pancreatic Adenocarcinoma	GSE57495	Pancreatic_Adenocarcinoma_GSE57495	63	Validation
+168	Pancreatic Adenocarcinoma	GSE172356	Pancreatic_Adenocarcinoma_Guo	62	Validation
+169	Stomach Adenocarcinoma	GSE29272	Stomach_Adenocarcinoma_GSE29272_1	62	Validation
+170	Bladder Urothelial Carcinoma	GSE69795	Urothelial_Cancer_GSE69795	61	Validation
+171	Ovarian Cancer	GSE102073	OV_META_GSE102073	60	Validation
+172	Colorectal Adenocarcinoma	GSE92921	COREAD_META_GSE92921	59	Validation
+174	Breast Cancer	GSE5327	BRCA_META_GSE5327	58	Validation
+173	Breast Cancer	GSE20181	BRCA_LumiNorm_GSE20181	58	Validation
+176	Skin Cutaneous Melanoma	GSE15605	SKCM_META_Raskin	58	Validation
+175	Cervical Squamous Cell Carcinoma And Endocervical Adenocarcinoma	GSE146114	Uterine_Cervical_Neoplasm_GSE146114_GPL10558	58	Validation
+177	Cervical Squamous Cell Carcinoma And Endocervical Adenocarcinoma	phs000600	Uterine_Cervical_Neoplasm_PUB_CESC_phs000600	57	Validation
+179	Prostate Adenocarcinoma	GSE84042	Prostate_Adenocarcinoma_GSE84042	56	Validation
+180	Skin Cutaneous Melanoma	GSE22153	SKCM_META_Jonsson	56	Validation
+181	Skin Cutaneous Melanoma	GSE112509	SKCM_META_Kunz	56	Validation
+182	Stomach Adenocarcinoma	GSE34942	Stomach_Adenocarcinoma_Singapore_b2	56	Validation
+178	Cervical Squamous Cell Carcinoma And Endocervical Adenocarcinoma	GSE44001	Uterine_Cervical_Neoplasm_GSE44001_GPL14951_56	56	Validation
+183	Colorectal Adenocarcinoma	GSE17537	COREAD_META_GSE17537	55	Validation
+184	Prostate Adenocarcinoma	GSE60329	Prostate_Adenocarcinoma_GSE60329_1	54	Validation
+188	Prostate Adenocarcinoma	GSE60329	Prostate_Adenocarcinoma_GSE60329_2	53	Validation
+187	Ovarian Cancer	GSE18520	OV_META_GSE18520	53	Validation
+186	Colorectal Adenocarcinoma	GSE50760	COREAD_META_GSE50760	53	Validation
+185	Breast Cancer	GSE20685	BRCA_Her2_GSE20685	53	Validation
+189	Skin Cutaneous Melanoma	GSE19293	SKCM_META_Augustine	52	Validation
+190	Ovarian Cancer	GSE30161	OV_META_GSE30161	51	Validation
+191	Ovarian Cancer	GSE44104	OV_META_GSE44104	51	Validation
+192	Skin Cutaneous Melanoma	GSE98394	SKCM_META_Badal	51	Validation
+193	Bladder Urothelial Carcinoma	GSE128959	Urothelial_Cancer_GSE128959	50	Validation
+194	Pancreatic Adenocarcinoma	GSE79668	Pancreatic_Adenocarcinoma_Kirby	50	Validation
+199	Prostate Adenocarcinoma	GSE35988	Prostate_Adenocarcinoma_GSE35988	49	Validation
+198	Pancreatic Adenocarcinoma	GSE60979	Pancreatic_Adenocarcinoma_GSE60979	49	Validation
+197	Head And Neck Squamous Cell Carcinoma	GSE40774	Squamous_Cell_Carcinoma_of_the_Head_and_Neck_GSE40774	49	Validation
+195	Breast Cancer	GSE1561	BRCA_META_GSE1561	49	Validation
+196	Colorectal Adenocarcinoma	GSE152430	COREAD_META_SRP267209	49	Validation
+202	Glioma	GSE48865	Glioma_META_GSE48865	47	Validation
+200	Bladder Urothelial Carcinoma	GSE70691	Urothelial_Cancer_GSE70691	47	Validation
+201	Breast Cancer	GSE76360	BRCA_Her2_GSE76360	47	Validation
+203	Lung Adenocarcinoma	GSE19188	Lung_Adenocarcinoma_GSE19188_batch_0	45	Validation
+204	Pancreatic Adenocarcinoma	GSE131050	Pancreatic_Adenocarcinoma_Rashid	44	Validation
+205	Skin Cutaneous Melanoma	GSE19234	SKCM_META_Bogunovic	44	Validation
+206	Ovarian Cancer	GSE12470	OV_META_GSE12470	43	Validation
+209	Skin Cutaneous Melanoma	phs000452	SKCM_META_VanAllen	42	Validation
+208	Ovarian Cancer	PMID19318476	OV_META_PMID19318476	42	Validation
+207	Breast Cancer	GSE20437	BRCA_META_GSE20437	42	Validation
+210	Glioblastoma	PRJNA347513	Glioma_META_PRJNA347513	41	Validation
+211	Lung Squamous Cell Carcinoma	GSE103584	LUSC_META_FF_RNAseqTotal	22	Validation
+212	Lung Squamous Cell Carcinoma	GSE124625	LUSC_META_FF_PolyA_NStranded_and_SStranded	11	Validation
+213	Glioma	PRJNA347513	Glioma_META_PRJNA347513	6	Validation
+214	Non-Small Cell Lung Cancer	GSE81089	LUSC_META_FF_PolyA_NStranded_PRJNA320473	5	Validation
+215	Astrocytoma	PRJNA347513	Glioma_META_PRJNA347513	3	Validation
+216	Lung Adenocarcinoma	GSE103584	LUSC_META_FF_RNAseqTotal	1	Validation

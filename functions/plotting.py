@@ -16,6 +16,7 @@ from functions.utils import round_to_1
 from matplotlib.colors import LinearSegmentedColormap, to_hex, rgb_to_hsv
 import distinctipy
 
+blue_color = 'cornflowerblue'
 default_cmap = LinearSegmentedColormap.from_list("default_cmap", ["navy", "white", "crimson"])
 
 cells_p = {'B_cells': '#004283',
@@ -210,7 +211,7 @@ def simple_palette_scatter(
         palette = lin_colors(grouping)
 
     if order is None:
-        order = np.sort(list(palette.keys()))
+        order = c_grouping.value_counts().index.to_list()
 
     c_grouping, c_x, c_y = to_common_samples(
         [grouping[sort_by_terms_order(grouping, order)], x, y]
@@ -1230,3 +1231,24 @@ def boxplot_with_pvalue(
         ax.set_xlabel(xlabel)
 
     return ax
+
+ie_palette = {'Fibrotic, Angiogenic, Myeloid': '#99254C',
+ 'Highly Immune-Enriched, Inflamed': '#00D6D6',
+ 'Immune Desert': '#EF6B0F',
+ 'Immune-Enriched, Hypoxic': '#5846D6',
+ 'Lymphoid-Cell-Enriched': '#0000CC',
+ 'Immune-Enriched, Fibrotic': '#0082A0',
+ 'Faintly Infiltrated, Angiogenic': '#F2D79A',
+ 'Fibrotic, Hypoxic': '#CC0033',
+ 'B-Cell-Enriched, Angiogenic': '#1E8BF4',
+'Unclassified':'silver'}
+
+ie_order = ['Lymphoid-Cell-Enriched',
+ 'B-Cell-Enriched, Angiogenic',
+ 'Immune-Enriched, Hypoxic',
+ 'Highly Immune-Enriched, Inflamed',
+ 'Immune-Enriched, Fibrotic',
+ 'Fibrotic, Angiogenic, Myeloid',
+ 'Fibrotic, Hypoxic',
+ 'Immune Desert',
+ 'Faintly Infiltrated, Angiogenic']

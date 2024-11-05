@@ -186,9 +186,9 @@ def median_scale(data, clip=None, c=1., exclude=None, axis=0):
     return c_data
 
 
-def read_dataset(file, sep='\t', header=0, index_col=0, comment=None):
+def read_dataset(file, sep='\t', header=0, index_col=0, comment=None, usecols=None):
     return pd.read_csv(file, sep=sep, header=header, index_col=index_col,
-                       na_values=['Na', 'NA', 'NAN'], comment=comment)
+                       na_values=['Na', 'NA', 'NAN'], comment=comment, usecols=usecols)
 
 
 def item_series(item, indexed=None):

@@ -1,0 +1,46 @@
+	Name	Descr	Genes
+Pro-inflammatory cytokines	Pro-inflammatory cytokines	FGES	{'CCL2', 'IL23A', 'CXCL2', 'CCL3', 'LIF', 'IL1A', 'IL26', 'TNF', 'CCL4', 'IL6', 'IL1B', 'IFNB1'}
+Pro-tumor chemokines	Pro-tumor chemokines	FGES	{'CXCL8', 'CCL17', 'CCL22', 'CXCL6', 'CCL20', 'CCL18', 'CCL26', 'CXCL1'}
+Apoptosis	Apoptosis	FGES	{'CASP3', 'TNFRSF10A', 'BCL10', 'CASP2', 'TNFRSF10B', 'APAF1', 'CASP8AP2', 'IER3', 'TNFRSF12A', 'BIK', 'BCL2L11', 'CASP6', 'XAF1', 'FAS', 'PMAIP1', 'CYLD', 'CASP8', 'CASP7'}
+Metabolic suppression of CTLs	Metabolic suppression of CTL	FGES	{'ENTPD1', 'SPHK1', 'ADORA2A', 'MSR1'}
+Macrophages	Pan-macrophage signature	FGES	{'CSF1R', 'SIGLEC1', 'MSR1', 'CD163', 'VSIG4', 'CD68', 'C1QA', 'C1QC'}
+Myeloid checkpoints	Myeloid_checkpoints	FGES	{'HAVCR2', 'CD274', 'C10orf54', 'PDCD1LG2'}
+Myeloid suppressive factors	Myeloid suppression	FGES	{'FGL2', 'MSR1', 'IL4I1', 'EBI3', 'CYBB', 'PTGS2', 'IDO1', 'IL10', 'TGFBI'}
+Myeloid inhibitory receptors	Phagocytosis inhibition	FGES	{'FCGR2B', 'SIGLEC10', 'LILRB1', 'LILRB2', 'PECAM1', 'SIRPA', 'CD300A', 'LILRB3', 'CD300LF', 'CD33', 'LILRB4'}
+cDC1	cDC1	FGES	{'CLEC9A', 'HLA-DOB', 'BATF3', 'WDFY4', 'XCR1', 'C1orf54'}
+cDC2	cDC2	FGES	{'HLA-DRA', 'CD1C', 'CLEC10A', 'AMICA1', 'ITGAX', 'HLA-DRB1', 'FCER1A'}
+pDC	pDC	FGES	{'LILRA4', 'SCT', 'DERL3', 'CCR2', 'CXCR3', 'CLEC4C', 'IL3RA', 'GZMB'}
+Lymphoid checkpoints	Lymphoid_checkpoints	FGES	{'LAG3', 'PDCD1', 'BTLA', 'TIGIT', 'PVRIG', 'CTLA4'}
+NK cells	NK cells	FGES	{'FGFBP2', 'KIR2DL4', 'EOMES', 'CD244', 'KLRF1', 'GZMB', 'NKG7', 'NCR3', 'IFNG', 'CD160', 'KLRK1', 'GZMH', 'CD226', 'KLRC2', 'GNLY', 'SH2D1B', 'NCR1'}
+CD8 T cells	CD8 T cells	FGES	{'NKG7', 'TRAT1', 'ZAP70', 'TBX21', 'EOMES', 'KLRK1', 'GZMA', 'CD8B', 'GZMK', 'CD8A', 'PRF1', 'GZMB'}
+CTL inhibitory receptors	Cytotoxic cell inactivation	FGES	{'KLRB1', 'FASLG', 'LGALS9', 'KLRD1', 'SERPINB9', 'SIGLEC7', 'LAIR2', 'CD5', 'PIM2', 'LAIR1'}
+T cells	T cells	FGES	{'TRBC1', 'ITK', 'TRAT1', 'CD28', 'TBX21', 'CD3G', 'CD5', 'TRBC2', 'TRAC', 'CD3D', 'CD3E'}
+TLS formation	TLS_NL	FGES	{'CCL19', 'LAMP3', 'TNFRSF17', 'CXCL13', 'FDCSP', 'CXCR3', 'LTA', 'CXCL9', 'CXCL10', 'SELL', 'CCL21', 'PTPRCAP', 'CCR7', 'CD86', 'JCHAIN'}
+Anti-tumor chemokines	Anti-tumor chemokines	FGES	{'XCL2', 'CCL19', 'CCL5', 'CXCL13', 'CXCL10', 'CXCL9', 'XCL1', 'CCL21'}
+MHCII	MHCII	FGES	{'HLA-DPB1', 'HLA-DRA', 'HLA-DQB1', 'HLA-DPA1', 'HLA-DMA', 'CIITA', 'HLA-DQA1', 'HLA-DMB', 'HLA-DRB1'}
+M1 cytokines	M1 cytokines	FGES	{'IL12B', 'IL23A', 'TNF', 'IL1B', 'CXCL10', 'CXCL9'}
+Treg cells	Treg cells	FGES	{'IKZF4', 'IKZF2', 'FOXP3', 'IL2RA', 'TNFRSF18', 'CCR8', 'CTLA4'}
+B cells	B cells	FGES	{'TNFRSF13B', 'CD22', 'CD79B', 'TNFRSF17', 'BLK', 'STAP1', 'MS4A1', 'PAX5', 'FCRL5', 'CD79A', 'CD19', 'CR2', 'TNFRSF13C'}
+Breg cells	Breg	FGES	{'SOX5', 'ZBTB32', 'ZBTB20', 'NFKBID', 'EBI3'}
+Hypoxia	Hypoxia_factors	FGES	{'PFKFB3', 'FUT11', 'LDHA', 'ALDOA', 'SLC2A1', 'CA12', 'CA9', 'P4HA1', 'PGK1', 'HK2', 'LOX', 'TPI1', 'EPAS1', 'PDK1', 'NDRG1'}
+Glycolysis	Glycolysis	FGES	{'PFKP', 'LDHA', 'ALDOA', 'SLC16A3', 'BPGM', 'ENO1', 'PGK1', 'TPI1', 'GPI', 'GPD2'}
+Autophagy	Autophagy	FGES	{'NBR1', 'MAP1LC3B', 'TFEB', 'GABARAPL1', 'ATG12', 'VMP1', 'ATG14', 'ATG7', 'ATG9A', 'RB1CC1', 'GABARAP', 'ATG13', 'GABARAPL2', 'ATG4B'}
+Acidosis	Acidosis	FGES	{'MAPK14', 'SLC9A1', 'SLC16A1', 'SLC16A4'}
+Proliferation rate	Proliferation_rate	FGES	{'E2F1', 'AURKB', 'CCND1', 'CDK2', 'PLK1', 'BUB1', 'AURKA', 'MCM2', 'CCNB1', 'MCM6', 'CCNE1', 'ESCO2', 'MYBL2', 'CETN3', 'MKI67'}
+Endothelial cells	Endothelium	FGES	{'FLT1', 'ENG', 'KDR', 'MMRN2', 'ECSCR', 'MMRN1', 'ROBO4', 'NOS3', 'VWF', 'CLEC14A', 'CDH5'}
+Angiogenesis	Angiogenesis	FGES	{'FLT1', 'KDR', 'TEK', 'CXCR2', 'PDGFC', 'VEGFC', 'VEGFB', 'ANGPT2', 'PGF', 'VEGFA', 'VWF', 'CDH5', 'ANGPT1'}
+EMT	EMT_signature_new	FGES	{'RUNX2', 'FOXM1', 'SNAI1', 'TWIST1', 'SNAI2'}
+Metastasis factors	Metastasis_signature_new	FGES	{'HPSE', 'SERPINH1', 'CDH2', 'PARP1', 'MMP9', 'RCC2'}
+Matrix remodeling	Matrix_remodeling	FGES	{'ADAMTS5', 'MMP12', 'MMP9', 'MMP1', 'CA9', 'MMP11', 'MMP2', 'LOX', 'PLOD2', 'MMP7', 'MMP3', 'ADAMTS4'}
+Stromal suppressive factors	Stromal suppression	FGES	{'TDO2', 'IL11', 'TSLP', 'IL6', 'TGFBI', 'TGFB2', 'TGFB3'}
+Cell senescence	Senescence	FGES	{'CXCL8', 'CCL2', 'CEBPB', 'IGFBP3', 'ATF3', 'SERPINE1', 'CXCL1', 'TNFRSF10D', 'STAT1', 'GDF15', 'CDKN2B', 'IL1B', 'GLB1', 'PLAU', 'TGFB1', 'IGFBP2', 'BCL2L1', 'ITGB3', 'CDKN1A', 'BCL2L2', 'IGFBP7', 'DPP4', 'IL6', 'MMP3', 'CDKN2A'}
+Effector cell exclusion	Exclusion	FGES	{'TNFAIP6', 'VEGFA', 'FGF2', 'EDNRB', 'CXCL12', 'PDGFC', 'GAS6'}
+Matrix	Matrix	FGES	{'LGALS9', 'FN1', 'COL11A1', 'COL1A1', 'ELN', 'LAMC2', 'TNC', 'VTN', 'COL4A1', 'COL1A2', 'LAMB3', 'COL3A1', 'LAMA3', 'COL5A1', 'LGALS7'}
+CAFs	CAF	FGES	{'FGF2', 'PDGFRA', 'COL6A2', 'LRP1', 'MMP2', 'LUM', 'LGALS1', 'CXCL12', 'COL6A1', 'ACTA2', 'FAP', 'COL1A1', 'FN1', 'COL11A1', 'PDGFRB', 'FBLN1', 'MFAP5', 'CD248', 'COL6A3', 'COL1A2', 'MMP3', 'COL5A1'}
+Adipocytes	Adipocytes	FGES	{'ADIPOQ', 'LIPE', 'PPP1R1A', 'GPD1', 'DLAT', 'ADH1B', 'FABP4', 'LEP', 'PTGER3', 'PLIN1', 'COL4A4', 'LBP'}
+EGFR pathway	EGFR	PROGENy	{'EGFR'}
+MAPK pathway	MAPK	PROGENy	{'MAPK'}
+Hypoxia pathway	Hypoxia	PROGENy	{'Hypoxia'}
+PI3K pathway	PI3K	PROGENy	{'PI3K'}
+TGFβ pathway	TGFb	PROGENy	{'TGFb'}
+TRAIL pathway	Trail	PROGENy	{'Trail'}

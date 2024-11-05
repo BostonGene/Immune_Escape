@@ -8,6 +8,8 @@ from functions.plotting import axis_matras, bot_bar_plot, lin_colors
 
 from matplotlib.cm import tab20c
 
+
+
 def query_genes_by_symbol(genes, verbose=False):
     """
 
@@ -415,3 +417,49 @@ def clustering_profile_metrics_mean_plot(cluster_metrics, cluster_of_interest=No
 
     ax.set_ylabel('Cluster %')
     return af
+
+naming_mapper = {'Pro-inflammatory cytokines': 'Pro-inflammatory cytokines',
+ 'Pro-tumor chemokines': 'Pro-tumor chemokines',
+ 'Metabolic suppression of CTLs': 'Metabolic suppression of CTL',
+ 'Apoptosis': 'Apoptosis',
+ 'Macrophages': 'Pan-macrophage signature',
+ 'Myeloid checkpoints': 'Myeloid_checkpoints',
+ 'Myeloid suppressive factors': 'Myeloid suppression',
+ 'Myeloid inhibitory receptors': 'Phagocytosis inhibition',
+ 'cDC1': 'cDC1',
+ 'cDC2': 'cDC2',
+ 'pDC': 'pDC',
+ 'Lymphoid checkpoints': 'Lymphoid_checkpoints',
+ 'NK cells': 'NK cells',
+ 'CD8 T cells': 'CD8 T cells',
+ 'CTL inhibitory receptors': 'Cytotoxic cell inactivation',
+ 'T cells': 'T cells',
+ 'TLS formation': 'TLS_NL',
+ 'Anti-tumor chemokines': 'Anti-tumor chemokines',
+ 'MHCII': 'MHCII',
+ 'M1 cytokines': 'M1 cytokines',
+ 'Treg cells': 'Treg cells',
+ 'B cells': 'B cells',
+ 'Breg cells': 'Breg',
+ 'EGFR pathway': 'EGFR',
+ 'MAPK pathway': 'MAPK',
+ 'Hypoxia pathway': 'Hypoxia',
+ 'Hypoxia': 'Hypoxia_factors',
+ 'Glycolysis': 'Glycolysis',
+ 'PI3K pathway': 'PI3K',
+ 'Autophagy': 'Autophagy',
+ 'Acidosis': 'Acidosis',
+ 'Proliferation rate': 'Proliferation_rate',
+ 'Endothelial cells': 'Endothelium',
+ 'Angiogenesis': 'Angiogenesis',
+ 'EMT': 'EMT_signature_new',
+ 'TGFβ pathway': 'TGFb',
+ 'Metastasis factors': 'Metastasis_signature_new',
+ 'Matrix remodeling': 'Matrix_remodeling',
+ 'Stromal suppressive factors': 'Stromal suppression',
+ 'Cell senescence': 'Senescence',
+ 'Effector cell exclusion': 'Exclusion',
+ 'Matrix': 'Matrix',
+ 'CAFs': 'CAF',
+ 'Adipocytes': 'Adipocytes',
+ 'TRAIL pathway': 'Trail'}
